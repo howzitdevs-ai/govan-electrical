@@ -316,7 +316,7 @@ function Footer() {
           style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}
         >
           <p>Copyright © 2026 | Govan Electrical. All rights reserved.</p>
-          <p>Designed with ⚡ by Govan Electrical</p>
+          <p>Designed ⚡ by <a href="https://www.aluwanienterprise.co.za/" target="_blank" rel="noopener noreferrer" className="hover:text-orange-400 transition-colors">Aluwani Enterprise</a></p>
         </div>
       </div>
     </footer>
