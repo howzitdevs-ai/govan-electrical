@@ -350,7 +350,7 @@ function AboutSection() {
 
               <div className="space-y-6 text-gray-700 leading-relaxed">
                 <p>
-                  Welcome to Govan Electrical, your trusted partner for all your solar, electrical and fuel needs.
+                  Welcome to Govan Electrical, your trusted partner for all your solar, electrical and diesel power generator needs.
                 </p>
                 <p>
                   We are committed to providing sustainable solutions that harness the power of the sun, while also servicing your existing electrical systems.
