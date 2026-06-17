@@ -239,7 +239,7 @@ function HeroSection() {
           </Link>
           <Link href="/diesel-delivery">
             <a className="block w-full md:w-auto px-6 md:px-8 py-4 text-sm font-bold text-white rounded uppercase tracking-wide hover:opacity-90 transition-opacity" style={{ backgroundColor: ORANGE }}>
-              DIESEL DELIVERY
+              DIESEL POWER GENERATOR
             </a>
           </Link>
           <Link href="/solar-packages">

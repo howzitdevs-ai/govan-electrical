@@ -8,10 +8,10 @@ export default function DieselDelivery() {
       <section className="relative py-24 bg-[#1A1A1A] text-white">
         <div className="max-w-7xl mx-auto px-4 relative z-10 text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold mb-6" style={{ fontFamily: "Montserrat, sans-serif" }}>
-            Diesel <span style={{ color: "#FFD700" }}>Delivery</span>
+            Diesel <span style={{ color: "#FFD700" }}>Power Generator</span>
           </h1>
           <p className="text-lg max-w-2xl mx-auto opacity-80">
-            Prompt, reliable bulk diesel delivery for generators and industrial equipment to keep you running.
+            A diesel generator combines a diesel engine with an electric generator to produce electrical energy. It is widely used for backup power during outages or as a primary power source in areas without grid access.
           </p>
         </div>
       </section>
