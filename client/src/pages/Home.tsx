@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import panelsBg from "@/images/panels-electricity-order-sunlight.png";
+import aboutImg from "@/images/imh.jpeg";
 
 // ─── Color palette (Govan Electrical brand colors) ──────────────────────────
 const NAVY = "#1A1A1A";      // Black (primary dark)
@@ -334,7 +335,7 @@ function AboutSection() {
             {/* Left: Image */}
             <div className="relative">
               <img
-                src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&q=80&w=1000"
+                src={aboutImg}
                 alt="Govan Electrical Team"
                 className="w-full h-auto object-cover shadow-lg"
               />
