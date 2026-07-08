@@ -432,13 +432,13 @@ function AboutSection() {
                 ))}
               </div>
 
-              <a
-                href="#services"
+              <button
+                onClick={() => document.getElementById("services")?.scrollIntoView({ behavior: "smooth", block: "start" })}
                 className="inline-block mt-8 px-8 py-3 font-bold rounded shadow transition-opacity hover:opacity-90"
                 style={{ backgroundColor: ORANGE, color: NAVY }}
               >
                 Explore Our Services
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -1098,13 +1098,13 @@ function FAQSection() {
 
         <div className="text-center mt-10">
           <p className="text-gray-500 text-sm mb-4">Still have questions? We're happy to help.</p>
-          <a
-            href="#contact"
+          <button
+            onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth", block: "start" })}
             className="inline-flex items-center gap-2 px-8 py-3 rounded-lg font-bold text-sm transition-opacity hover:opacity-90"
             style={{ backgroundColor: ORANGE, color: NAVY }}
           >
             <Phone size={16} /> Ask Us Anything
-          </a>
+          </button>
         </div>
       </div>
     </section>

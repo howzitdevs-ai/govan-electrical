@@ -152,6 +152,7 @@ function Navbar() {
                             style={{ color: NAVY }}
                             onMouseEnter={(e) => ((e.target as HTMLElement).style.color = ORANGE_DARK)}
                             onMouseLeave={(e) => ((e.target as HTMLElement).style.color = NAVY)}
+                            onClick={(e) => { if (handleNavClick(drop.href)) e.preventDefault(); }}
                           >
                             {drop.label}
                           </a>
@@ -219,7 +220,7 @@ function Navbar() {
                           <a
                             className="block px-4 py-2.5 text-sm font-semibold rounded hover:bg-yellow-50 transition-colors"
                             style={{ color: NAVY }}
-                            onClick={() => setOpen(false)}
+                            onClick={(e) => { if (handleNavClick(drop.href)) e.preventDefault(); else setOpen(false); }}
                           >
                             {drop.label}
                           </a>
@@ -266,6 +267,15 @@ function Navbar() {
 }
 
 function Footer() {
+  const [location] = useLocation();
+
+  const handleFooterClick = (href: string, e: React.MouseEvent) => {
+    if (href.startsWith("/#") && location === "/") {
+      e.preventDefault();
+      scrollToId(href.substring(2));
+    }
+  };
+
   return (
     <footer className="text-white" style={{ backgroundColor: NAVY }}>
       <div className="max-w-7xl mx-auto px-4 py-14">
@@ -301,7 +311,7 @@ function Footer() {
               ].map((s) => (
                 <li key={s.label}>
                   <Link href={s.href}>
-                    <a className="hover:opacity-100 transition hover:text-orange-400">{s.label}</a>
+                    <a className="hover:opacity-100 transition hover:text-orange-400" onClick={(e) => handleFooterClick(s.href, e)}>{s.label}</a>
                   </Link>
                 </li>
               ))}
@@ -317,7 +327,7 @@ function Footer() {
               {NAV_LINKS.filter(l => !l.dropdown).map((l) => (
                 <li key={l.label}>
                   <Link href={l.href}>
-                    <a className="hover:opacity-100 transition hover:text-orange-400">{l.label}</a>
+                    <a className="hover:opacity-100 transition hover:text-orange-400" onClick={(e) => handleFooterClick(l.href, e)}>{l.label}</a>
                   </Link>
                 </li>
               ))}
