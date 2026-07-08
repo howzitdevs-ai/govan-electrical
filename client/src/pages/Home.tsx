@@ -589,164 +589,257 @@ function WhyUsSection() {
 
 function ContactSection() {
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", service: "", message: "" });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
   };
-
-  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const errs: Record<string, string> = {};
+    if (!formData.name.trim()) errs.name = "Name is required";
+    if (!formData.email.trim()) errs.email = "Email is required";
+    if (!formData.phone.trim()) errs.phone = "Phone number is required";
+    if (!formData.service) errs.service = "Please select a service";
+    if (Object.keys(errs).length > 0) { setErrors(errs); return; }
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 5000);
     setFormData({ name: "", email: "", phone: "", service: "", message: "" });
   };
 
-  const inputStyle: React.CSSProperties = {
-    width: "100%",
-    padding: "12px 14px",
-    border: `1px solid ${ORANGE}`,
-    borderRadius: 6,
-    fontSize: 14,
-    outline: "none",
-    fontStyle: "italic",
-  };
+  const fieldCls = (key: string) =>
+    `w-full px-4 py-3 border rounded-lg text-sm outline-none transition-colors ${
+      errors[key] ? "border-red-400 bg-red-50" : "border-gray-200 focus:border-yellow-400"
+    }`;
 
   return (
-    <section
-      id="contact"
-      className="py-20"
-      style={{
-        background: `linear-gradient(rgba(28,54,100,0.88), rgba(28,54,100,0.88)), url('https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=1600&q=80') center/cover`,
-      }}
-    >
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="grid md:grid-cols-2 gap-12 items-start">
-          {/* Left: info */}
-          <div className="text-white">
-            <p className="text-sm font-bold uppercase tracking-widest mb-3" style={{ color: ORANGE }}>
+    <>
+      {/* ── Contact Info + Form ── */}
+      <section id="contact" className="py-20" style={{ backgroundColor: "#f8f9fa" }}>
+        <div className="max-w-7xl mx-auto px-4">
+
+          {/* Section heading */}
+          <div className="text-center mb-14">
+            <p className="text-sm font-bold uppercase tracking-widest mb-3" style={{ color: ORANGE_DARK }}>
               Get In Touch
             </p>
-            <h2
-              className="text-4xl font-extrabold mb-6"
-              style={{ fontFamily: "Montserrat, sans-serif" }}
-            >
-              Ready to Start Your Project?
+            <h2 className="text-4xl font-extrabold" style={{ color: NAVY, fontFamily: "Montserrat, sans-serif" }}>
+              Contact Us
             </h2>
-            <p className="opacity-80 mb-8 leading-relaxed">
-              Have a question or need our services? Fill out the form and we'll get back to you as soon as possible. We'd love to help with your next electrical project.
-            </p>
+            <div className="w-16 h-1 mx-auto mt-3" style={{ backgroundColor: ACTION_GREEN }} />
+          </div>
 
-            <div className="space-y-5">
+          <div className="grid lg:grid-cols-2 gap-10 items-start">
+
+            {/* Left: contact details + hours */}
+            <div className="space-y-6">
+              {/* Info cards */}
               {[
-                { icon: Phone, label: "Phone", value: "012 023 3410 / 071 186 3732", href: "tel:+27120233410" },
-                { icon: Mail, label: "Email", value: "Admin@govanelectrical.co.za", href: "mailto:Admin@govanelectrical.co.za" },
-                { icon: MapPin, label: "Address", value: "Unit 02, 1 Kambathi Street, N4 Gateway Industrial park, Willow Park", href: "#" },
+                {
+                  icon: Phone,
+                  label: "Phone",
+                  lines: ["012 023 3410", "071 186 3732"],
+                  href: "tel:+27120233410",
+                },
+                {
+                  icon: Mail,
+                  label: "Email",
+                  lines: ["Admin@govanelectrical.co.za"],
+                  href: "mailto:Admin@govanelectrical.co.za",
+                },
+                {
+                  icon: MapPin,
+                  label: "Address",
+                  lines: ["Unit 02, 1 Kambathi Street", "N4 Gateway Industrial Park, Willow Park"],
+                  href: "https://maps.google.com/?q=-25.6748,28.3975",
+                },
               ].map((c) => (
                 <a
                   key={c.label}
                   href={c.href}
-                  className="flex items-start gap-4 group"
+                  target={c.label === "Address" ? "_blank" : undefined}
+                  rel={c.label === "Address" ? "noreferrer" : undefined}
+                  className="flex items-start gap-4 bg-white rounded-xl p-5 group transition-shadow hover:shadow-md"
+                  style={{ border: "1px solid #f0f0f0" }}
                 >
                   <div
-                    className="w-11 h-11 rounded-full flex-shrink-0 flex items-center justify-center mt-1"
-                    style={{ backgroundColor: ORANGE }}
+                    className="w-12 h-12 rounded-full flex-shrink-0 flex items-center justify-center"
+                    style={{ backgroundColor: NAVY }}
                   >
-                    <c.icon size={18} color="#fff" />
+                    <c.icon size={20} style={{ color: ORANGE }} />
                   </div>
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-widest opacity-60 mb-1">{c.label}</p>
-                    <p className="text-white group-hover:text-orange-300 transition">{c.value}</p>
+                    <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color: ORANGE_DARK }}>{c.label}</p>
+                    {c.lines.map((line, i) => (
+                      <p key={i} className="text-sm font-medium text-gray-700 group-hover:text-gray-900">{line}</p>
+                    ))}
                   </div>
                 </a>
               ))}
+
+              {/* Business hours */}
+              <div
+                className="bg-white rounded-xl p-5"
+                style={{ border: "1px solid #f0f0f0" }}
+              >
+                <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: ORANGE_DARK }}>
+                  Business Hours
+                </p>
+                <div className="space-y-2 text-sm">
+                  {[
+                    { day: "Monday – Friday", hours: "07:00 – 17:00" },
+                    { day: "Saturday", hours: "08:00 – 13:00" },
+                    { day: "Sunday", hours: "Closed" },
+                  ].map(({ day, hours }) => (
+                    <div key={day} className="flex justify-between items-center">
+                      <span className="font-medium text-gray-600">{day}</span>
+                      <span
+                        className="font-bold text-xs px-3 py-1 rounded-full"
+                        style={{
+                          backgroundColor: hours === "Closed" ? "#f3f4f6" : `${ORANGE}22`,
+                          color: hours === "Closed" ? "#9ca3af" : ORANGE_DARK,
+                        }}
+                      >
+                        {hours}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Right: form */}
+            <div className="bg-white rounded-2xl overflow-hidden" style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.1)" }}>
+              <div className="px-8 py-5" style={{ backgroundColor: NAVY }}>
+                <h3 className="text-xl font-extrabold text-white" style={{ fontFamily: "Montserrat, sans-serif" }}>
+                  Send Us a <span style={{ color: ORANGE }}>Message</span>
+                </h3>
+                <p className="text-white opacity-60 text-xs mt-1">We'll respond within 2 business hours.</p>
+              </div>
+
+              <div className="px-8 py-7">
+                {submitted ? (
+                  <div className="flex flex-col items-center justify-center py-8 gap-4 text-center">
+                    <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{ backgroundColor: `${ACTION_GREEN}18` }}>
+                      <CheckCircle size={32} style={{ color: ACTION_GREEN }} />
+                    </div>
+                    <p className="font-bold text-lg" style={{ color: NAVY }}>Message Sent!</p>
+                    <p className="text-gray-500 text-sm">Thank you — a member of our team will be in touch shortly.</p>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wide">Full Name *</label>
+                        <input
+                          type="text"
+                          name="name"
+                          value={formData.name}
+                          onChange={handleChange}
+                          placeholder="e.g. John Smith"
+                          className={fieldCls("name")}
+                        />
+                        {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wide">Email *</label>
+                        <input
+                          type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          placeholder="you@email.com"
+                          className={fieldCls("email")}
+                        />
+                        {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wide">Phone Number *</label>
+                      <input
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        placeholder="e.g. 082 123 4567"
+                        className={fieldCls("phone")}
+                      />
+                      {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wide">Service Required *</label>
+                      <select
+                        name="service"
+                        value={formData.service}
+                        onChange={handleChange}
+                        className={fieldCls("service") + (!formData.service ? " text-gray-400" : " text-gray-800")}
+                      >
+                        <option value="" disabled>Select a service…</option>
+                        <option value="solar">Solar Panel Installation</option>
+                        <option value="battery">Battery Backup / Inverter</option>
+                        <option value="electrical">Electrical Installations & Wiring</option>
+                        <option value="db">DB Board Upgrade</option>
+                        <option value="maintenance">Maintenance & Repairs</option>
+                        <option value="coc">Compliance Certificate (CoC)</option>
+                        <option value="diesel">Diesel Power Generator</option>
+                        <option value="industrial">Industrial Electrical</option>
+                        <option value="other">Other</option>
+                      </select>
+                      {errors.service && <p className="text-red-500 text-xs mt-1">{errors.service}</p>}
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-gray-600 mb-1.5 uppercase tracking-wide">
+                        Message <span className="font-normal text-gray-400">(optional)</span>
+                      </label>
+                      <textarea
+                        name="message"
+                        value={formData.message}
+                        onChange={handleChange}
+                        placeholder="Tell us about your project or ask a question…"
+                        rows={4}
+                        className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm outline-none resize-none focus:border-yellow-400 transition-colors"
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="w-full py-3.5 rounded-lg font-bold text-sm uppercase tracking-wide transition-opacity hover:opacity-90"
+                      style={{ backgroundColor: ORANGE, color: NAVY }}
+                    >
+                      Send Message
+                    </button>
+                    <p className="text-xs text-center text-gray-400">
+                      Protected under POPIA. We never share your details.
+                    </p>
+                  </form>
+                )}
+              </div>
             </div>
           </div>
-
-          {/* Right: form */}
-          <div className="bg-white rounded-2xl p-8" style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.3)" }}>
-            <h3 className="text-xl font-bold mb-6" style={{ color: NAVY, fontFamily: "Montserrat, sans-serif" }}>
-              Send Us a Message
-            </h3>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid sm:grid-cols-2 gap-4">
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="Your Name"
-                  required
-                  style={inputStyle}
-                />
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="Email Address"
-                  required
-                  style={inputStyle}
-                />
-              </div>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                placeholder="Phone Number"
-                required
-                style={inputStyle}
-              />
-              <select
-                name="service"
-                value={formData.service}
-                onChange={handleChange}
-                required
-                style={{ ...inputStyle, fontStyle: "normal", color: formData.service ? "#333" : "#999" }}
-              >
-                <option value="" disabled>Select a Service</option>
-                <option value="electrical">Electrical Installations</option>
-                <option value="maintenance">Maintenance &amp; Repairs</option>
-                <option value="solar">Solar &amp; Backup Power</option>
-                <option value="industrial">Industrial Electrical</option>
-                <option value="compliance">Safety &amp; Compliance</option>
-                <option value="commercial">Commercial Projects</option>
-                <option value="other">Other</option>
-              </select>
-              <textarea
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                placeholder="Tell us about your project..."
-                required
-                rows={4}
-                style={{ ...inputStyle, resize: "vertical" }}
-              />
-              {submitted && (
-                <div className="flex items-center gap-2 p-3 rounded-lg bg-green-50 border border-green-200 text-green-700 text-sm font-semibold">
-                  <CheckCircle size={18} /> Thank you! We'll be in touch shortly.
-                </div>
-              )}
-              <button
-                type="submit"
-                className="w-full py-3 font-bold text-white rounded-lg transition-all"
-                style={{ backgroundColor: ORANGE }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = ORANGE_DARK; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = ORANGE; }}
-              >
-                Send Inquiry
-              </button>
-              <p className="text-xs text-center opacity-60 mt-2">
-                Your information is protected under POPIA. We never share your details.
-              </p>
-            </form>
-          </div>
         </div>
+      </section>
+
+      {/* ── Map ── */}
+      <div className="w-full" style={{ height: 420 }}>
+        <iframe
+          title="Govan Electrical location"
+          src="https://maps.google.com/maps?q=-25.6748,28.3975&z=16&output=embed"
+          width="100%"
+          height="100%"
+          style={{ border: 0, display: "block" }}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+        />
       </div>
-    </section>
+    </>
   );
 }
 
