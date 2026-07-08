@@ -73,6 +73,15 @@ function TopBar() {
   );
 }
 
+function scrollToId(id: string) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+    return true;
+  }
+  return false;
+}
+
 function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -84,6 +93,20 @@ function Navbar() {
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // When already on home page, clicking /#hash doesn't change location,
+  // so we scroll directly instead of relying on the Layout effect.
+  const handleNavClick = (href: string) => {
+    if (href.startsWith("/#")) {
+      const id = href.substring(2);
+      if (location === "/") {
+        scrollToId(id);
+        setOpen(false);
+        return true;
+      }
+    }
+    return false;
+  };
 
   return (
     <nav
@@ -143,6 +166,7 @@ function Navbar() {
                       style={{ color: isActive ? ORANGE_DARK : NAVY, fontFamily: "Roboto, sans-serif" }}
                       onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = ORANGE_DARK)}
                       onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = isActive ? ORANGE_DARK : NAVY)}
+                      onClick={(e) => { if (handleNavClick(l.href)) e.preventDefault(); }}
                     >
                       {l.label}
                       {isActive && (
@@ -208,7 +232,7 @@ function Navbar() {
                     <a
                       className="flex items-center justify-between px-4 py-3 text-sm font-semibold rounded hover:bg-yellow-50 transition-colors"
                       style={{ color: isActive ? ORANGE_DARK : NAVY, borderLeft: isActive ? `3px solid ${ORANGE}` : "3px solid transparent" }}
-                      onClick={() => setOpen(false)}
+                      onClick={(e) => { if (handleNavClick(l.href)) e.preventDefault(); else setOpen(false); }}
                     >
                       {l.label}
                       {isActive && <span className="text-xs font-bold" style={{ color: ORANGE }}>●</span>}
@@ -397,16 +421,32 @@ function BackToTop() {
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
+
+  // Scroll to hash after page navigation (e.g. /solar-packages → /#contact)
   useEffect(() => {
     if (window.location.hash) {
-      const el = document.getElementById(window.location.hash.substring(1));
-      if (el) {
-        setTimeout(() => el.scrollIntoView({ behavior: "smooth" }), 100);
-      }
+      const id = window.location.hash.substring(1);
+      // Retry up to 3 times — content may not be painted yet
+      const attempt = (delay: number) => setTimeout(() => scrollToId(id), delay);
+      const t1 = attempt(100);
+      const t2 = attempt(350);
+      const t3 = attempt(700);
+      return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
     } else {
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0 });
     }
   }, [location]);
+
+  // Handle hash changes when already on the same page (hashchange fires,
+  // but wouter location doesn't change, so the effect above won't re-run)
+  useEffect(() => {
+    const onHashChange = () => {
+      const id = window.location.hash.substring(1);
+      if (id) scrollToId(id);
+    };
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
 
   return (
     <LeadFormProvider>
