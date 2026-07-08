@@ -29,7 +29,7 @@ const NAV_LINKS = [
       { label: "Services Overview", href: "/#services" },
       { label: "Solar Solutions", href: "/solar-solutions" },
       { label: "Electrical Solutions", href: "/electrical-solutions" },
-      { label: "Diesel Power Generator", href: "/diesel-delivery" },
+      { label: "Diesel Delivery", href: "/diesel-delivery" },
     ]
   },
   { label: "Why Us", href: "/#why-us" },
@@ -271,7 +271,7 @@ function Footer() {
               {[
                 { label: "Electrical Installations", href: "/electrical-solutions" },
                 { label: "Solar & Backup Power", href: "/solar-solutions" },
-                { label: "Diesel Power Generator", href: "/diesel-delivery" },
+                { label: "Diesel Delivery", href: "/diesel-delivery" },
                 { label: "Maintenance & Repairs", href: "/#services" },
                 { label: "Industrial Electrical", href: "/#services" },
               ].map((s) => (
