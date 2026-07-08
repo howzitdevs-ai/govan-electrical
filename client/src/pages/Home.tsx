@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
+import { useSEO } from "@/hooks/useSEO";
 import {
   Phone,
   Mail,
@@ -8,8 +9,7 @@ import {
   Wrench,
   Shield,
   Star,
-  ChevronLeft,
-  ChevronRight,
+  ChevronDown,
   Sun,
   Settings,
   CheckCircle,
@@ -17,8 +17,14 @@ import {
   Users,
   Clock,
   Handshake,
+  MessageCircle,
+  Calculator,
+  MapPinned,
+  TrendingUp,
+  BadgeCheck,
 } from "lucide-react";
 import { Layout } from "@/components/Layout";
+import { useLeadForm } from "@/contexts/LeadFormContext";
 import panelsBg from "@/images/panels-electricity-order-sunlight.png";
 import aboutImg from "@/images/imh.jpeg";
 
@@ -51,15 +57,6 @@ function useCountUp(target: number, active: boolean) {
 }
 
 // ─── Data ──────────────────────────────────────────────────────────────────
-const NAV_LINKS = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "Why Us", href: "#why-us" },
-  { label: "Testimonials", href: "#testimonials" },
-  { label: "Contact", href: "#contact" },
-];
-
 const HERO_SLIDES = [
   {
     heading: "Powering Your Future",
@@ -154,33 +151,78 @@ const WHY_US = [
   },
 ];
 
-const TESTIMONIALS = [
-  {
-    name: "Mthandazo Dube",
-    role: "Residential Client",
-    text: "Govan Electrical is simply the best when it comes to electrical systems. The team did a fantastic job at my house. I would definitely recommend them. Big up Nkosi and your team!",
-  },
-  {
-    name: "Spook von Eschwege",
-    role: "Commercial Client",
-    text: "I just want to thank the team for a job well done. I received many compliments on the installation and it works perfectly! The level of professionalism and respectfulness is commendable.",
-  },
-  {
-    name: "Monique Nortje",
-    role: "Residential Client",
-    text: "Extremely happy and very impressed with Govan Electrical! They went above and beyond, travelling to our small town without overcharging. Everything was properly explained and installation was done professionally.",
-  },
-  {
-    name: "Matthew Mokoena",
-    role: "Property Developer",
-    text: "After receiving more than 20 quotes, Govan was the best hands down. Confirmed quote on Thursday, installation done on Monday. They also fixed some poor workmanship issues. Highly recommended!",
-  },
-];
 
 // ─── Components ────────────────────────────────────────────────────────────
 
+const HOME_SCHEMA = [
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://www.govanelectrical.co.za/#business",
+    "name": "Govan Electrical",
+    "description": "Professional electrical maintenance, solar panel installations and diesel generator solutions for residential, commercial and industrial clients across South Africa.",
+    "url": "https://www.govanelectrical.co.za",
+    "telephone": "+27120233410",
+    "email": "Admin@govanelectrical.co.za",
+    "priceRange": "$$",
+    "currenciesAccepted": "ZAR",
+    "paymentAccepted": "Cash, Bank Transfer, EFT",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Unit 02, 1 Kambathi Street, N4 Gateway Industrial Park",
+      "addressLocality": "Willow Park",
+      "addressRegion": "Gauteng",
+      "postalCode": "0184",
+      "addressCountry": "ZA"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "-25.6748",
+      "longitude": "28.3975"
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "07:00",
+        "closes": "17:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": "Saturday",
+        "opens": "08:00",
+        "closes": "13:00"
+      }
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Electrical & Solar Services",
+      "itemListElement": [
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Solar Panel Installations", "url": "https://www.govanelectrical.co.za/solar-solutions" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Electrical Installations & Wiring", "url": "https://www.govanelectrical.co.za/electrical-solutions" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Diesel Power Generator Solutions", "url": "https://www.govanelectrical.co.za/diesel-delivery" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Electrical Maintenance & Repairs" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Safety Compliance Certificates (CoC)" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Industrial Electrical Work" } }
+      ]
+    },
+    "sameAs": [
+      "https://www.facebook.com/govanelectrical",
+      "https://www.instagram.com/govanelectrical"
+    ]
+  }
+];
+
 // ─── Main export ───────────────────────────────────────────────────────────
 export default function Home() {
+  useSEO({
+    title: "Govan Electrical | Solar & Electrical Installations | South Africa",
+    description: "Expert electrical installations, solar panel systems & diesel generator solutions across South Africa. Certified electricians, 4000+ installations. Call 012 023 3410.",
+    keywords: "electricians South Africa, solar panel installation South Africa, electrical contractor Pretoria, diesel generator South Africa, load shedding solutions, COC certificate, DB board upgrade, Govan Electrical",
+    canonical: "/",
+    schema: HOME_SCHEMA,
+  });
+
   return (
     <Layout>
       <HeroSection />
@@ -188,7 +230,10 @@ export default function Home() {
       <ServicesSection />
       <StatsSection />
       <WhyUsSection />
-      <TestimonialsSection />
+      <BrandsSection />
+      <SavingsCalculatorSection />
+      <FAQSection />
+      <AreasWeServeSection />
       <ContactSection />
     </Layout>
   );
@@ -201,17 +246,17 @@ function HeroSection() {
       className="relative w-full flex items-center justify-center overflow-hidden"
       style={{
         minHeight: "100vh",
-        backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("${panelsBg}")`,
+        backgroundImage: `linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url("${panelsBg}")`,
         backgroundSize: "cover",
         backgroundPosition: "center"
       }}
     >
       {/* Content Container */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 w-full flex flex-col items-center justify-center pt-20 pb-40 text-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 w-full flex flex-col items-center justify-center py-24 md:py-20 md:pb-44 text-center">
 
         {/* Main Heading */}
         <h1
-          className="text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight drop-shadow-2xl max-w-5xl mx-auto"
+          className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-white mb-4 leading-tight drop-shadow-2xl max-w-5xl mx-auto"
           style={{ fontFamily: "Montserrat, sans-serif", textShadow: "2px 2px 10px rgba(0,0,0,0.8)" }}
         >
           Leading Provider Of High-Quality Energy Solutions
@@ -219,83 +264,73 @@ function HeroSection() {
 
         {/* Sub Heading */}
         <h2
-          className="text-2xl md:text-3xl font-bold mb-10"
+          className="text-xl sm:text-2xl md:text-3xl font-bold mb-8"
           style={{ color: ACTION_GREEN, textShadow: "1px 1px 4px rgba(0,0,0,0.8)" }}
         >
           How Can We Assist Today?
         </h2>
 
         {/* 4 Action Buttons */}
-        <div className="flex flex-col md:flex-row flex-wrap justify-center gap-4 mb-8 w-full max-w-4xl mx-auto px-4">
+        <div className="grid grid-cols-2 md:flex md:flex-row md:flex-wrap justify-center gap-3 mb-8 w-full max-w-4xl mx-auto">
           <Link href="/solar-solutions">
-            <a className="block w-full md:w-auto px-6 md:px-8 py-4 text-sm font-bold text-white rounded uppercase tracking-wide hover:opacity-90 transition-opacity" style={{ backgroundColor: ORANGE }}>
+            <a className="block px-5 md:px-8 py-3 md:py-4 text-xs sm:text-sm font-bold text-white rounded uppercase tracking-wide hover:opacity-90 transition-opacity text-center" style={{ backgroundColor: ORANGE }}>
               SOLAR SOLUTIONS
             </a>
           </Link>
           <Link href="/electrical-solutions">
-            <a className="block w-full md:w-auto px-6 md:px-8 py-4 text-sm font-bold text-white rounded uppercase tracking-wide hover:opacity-90 transition-opacity" style={{ backgroundColor: ORANGE }}>
+            <a className="block px-5 md:px-8 py-3 md:py-4 text-xs sm:text-sm font-bold text-white rounded uppercase tracking-wide hover:opacity-90 transition-opacity text-center" style={{ backgroundColor: ORANGE }}>
               ELECTRICAL SOLUTIONS
             </a>
           </Link>
           <Link href="/diesel-delivery">
-            <a className="block w-full md:w-auto px-6 md:px-8 py-4 text-sm font-bold text-white rounded uppercase tracking-wide hover:opacity-90 transition-opacity" style={{ backgroundColor: ORANGE }}>
-              DIESEL POWER GENERATOR
+            <a className="block px-5 md:px-8 py-3 md:py-4 text-xs sm:text-sm font-bold text-white rounded uppercase tracking-wide hover:opacity-90 transition-opacity text-center" style={{ backgroundColor: ORANGE }}>
+              DIESEL GENERATOR
             </a>
           </Link>
           <Link href="/solar-packages">
-            <a className="block w-full md:w-auto px-6 md:px-8 py-4 text-sm font-bold text-white rounded uppercase tracking-wide hover:opacity-90 transition-opacity" style={{ backgroundColor: ACTION_GREEN }}>
-              VIEW SOLAR PACKAGES
+            <a className="block px-5 md:px-8 py-3 md:py-4 text-xs sm:text-sm font-bold text-white rounded uppercase tracking-wide hover:opacity-90 transition-opacity text-center" style={{ backgroundColor: ACTION_GREEN }}>
+              SOLAR PACKAGES
             </a>
           </Link>
         </div>
 
-        {/* Review Pill */}
-        <div className="bg-white rounded-full px-6 py-2 flex flex-col md:flex-row items-center gap-3 shadow-xl mb-16 inline-flex border border-gray-200">
-          <span className="font-bold text-lg tracking-tight">
-            <span className="text-blue-600">G</span><span className="text-red-500">o</span><span className="text-yellow-500">o</span><span className="text-blue-600">g</span><span className="text-green-500">l</span><span className="text-red-500">e</span>
-          </span>
-          <div className="flex items-center gap-2">
-            <span className="font-bold text-gray-800 text-lg">4.9</span>
-            <div className="flex text-yellow-400">
-              <Star size={18} fill="currentColor" />
-              <Star size={18} fill="currentColor" />
-              <Star size={18} fill="currentColor" />
-              <Star size={18} fill="currentColor" />
-              <Star size={18} fill="currentColor" />
-            </div>
-          </div>
-          <span className="text-xs md:text-sm text-gray-600 font-medium">
-            (200+ reviews (Reputable companies have reviews across Google/Hellopeter. Do not fall for fly by nights))
-          </span>
-        </div>
-
-        {/* Feature Box Bottom */}
-        <div className="absolute bottom-12 w-full max-w-3xl mx-auto px-4 left-0 right-0">
-          <div className="rounded-xl p-6 text-left shadow-2xl" style={{ backgroundColor: "rgba(0,0,0,0.6)", backdropFilter: "blur(8px)" }}>
-            <ul className="space-y-4">
-              <li className="flex items-center gap-3">
-                <CheckCircle size={24} style={{ color: ACTION_GREEN }} />
+        {/* Feature Box — inline on mobile, absolute on desktop */}
+        <div className="w-full max-w-3xl mx-auto md:absolute md:bottom-12 md:left-0 md:right-0 md:mx-auto md:px-4">
+          <div className="rounded-xl p-5 md:p-6 text-left shadow-2xl" style={{ backgroundColor: "rgba(0,0,0,0.65)", backdropFilter: "blur(8px)" }}>
+            <ul className="space-y-3 md:space-y-4">
+              <li className="flex items-start gap-3">
+                <CheckCircle size={22} className="shrink-0 mt-0.5" style={{ color: ACTION_GREEN }} />
                 <span className="text-white text-sm md:text-base font-medium tracking-wide">With over 4000 installations done across SA we are an expert in the field.</span>
               </li>
-              <li className="flex items-center gap-3">
-                <Award size={24} style={{ color: ORANGE }} />
-                <span className="text-white text-sm md:text-base font-medium tracking-wide">We offer free system monitoring</span>
+              <li className="flex items-start gap-3">
+                <Award size={22} className="shrink-0 mt-0.5" style={{ color: ORANGE }} />
+                <span className="text-white text-sm md:text-base font-medium tracking-wide">We offer free system monitoring on all installed systems.</span>
               </li>
-              <li className="flex items-center gap-3">
-                <Phone size={24} style={{ color: ACTION_GREEN }} />
-                <span className="text-white text-sm md:text-base font-medium tracking-wide">Prompt support & On call full support</span>
+              <li className="flex items-start gap-3">
+                <Phone size={22} className="shrink-0 mt-0.5" style={{ color: ACTION_GREEN }} />
+                <span className="text-white text-sm md:text-base font-medium tracking-wide">Prompt support &amp; on-call full support for every client.</span>
               </li>
             </ul>
           </div>
         </div>
       </div>
 
-      {/* Floating Call Buttons */}
-      <a href="tel:+27120233410" className="absolute bottom-6 left-6 px-6 py-3 rounded-full text-white font-bold flex items-center gap-2 shadow-lg transition-transform hover:scale-105 z-20" style={{ backgroundColor: ORANGE }}>
-        <Phone size={20} fill="currentColor" /> Call Us
+      {/* Floating Action Buttons */}
+      <a
+        href="tel:+27120233410"
+        className="absolute bottom-5 left-4 sm:left-6 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full text-white font-bold flex items-center gap-2 shadow-lg transition-transform hover:scale-105 z-20 text-sm"
+        style={{ backgroundColor: ORANGE }}
+      >
+        <Phone size={18} fill="currentColor" /> Call Us
       </a>
-      <a href="https://wa.me/27711863732" target="_blank" rel="noreferrer" className="absolute bottom-6 right-6 px-6 py-3 rounded-full text-white font-bold flex items-center gap-2 shadow-lg transition-transform hover:scale-105 z-20" style={{ backgroundColor: ACTION_GREEN }}>
-        <Mail size={20} /> Chat With Us
+      <a
+        href="https://wa.me/27711863732"
+        target="_blank"
+        rel="noreferrer"
+        className="absolute bottom-5 right-4 sm:right-6 px-4 sm:px-6 py-2.5 sm:py-3 rounded-full text-white font-bold flex items-center gap-2 shadow-lg transition-transform hover:scale-105 z-20 text-sm"
+        style={{ backgroundColor: ACTION_GREEN }}
+      >
+        <MessageCircle size={18} /> WhatsApp
       </a>
     </section>
   );
@@ -304,25 +339,34 @@ function HeroSection() {
 function AboutSection() {
   return (
     <>
-      {/* Top light blue banner with 3 columns */}
-      <section className="py-12" style={{ backgroundColor: "#EAF6FC" }}>
-        <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-8 text-center">
-          <div className="flex flex-col items-center px-4">
-            <Users size={48} style={{ color: ORANGE }} className="mb-4" />
-            <p className="text-gray-700 text-sm md:text-base leading-relaxed">
-              Our teams of qualified, certified, and experienced experts always deliver the desired results without compromising on quality.
+      {/* Top 3-column feature strip */}
+      <section className="py-14" style={{ backgroundColor: "#f8f9fa" }}>
+        <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-0 text-center divide-y md:divide-y-0 md:divide-x divide-gray-200">
+          <div className="flex flex-col items-center px-6 pb-10 md:pb-0">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: `${ORANGE}22` }}>
+              <Users size={30} style={{ color: ORANGE_DARK }} />
+            </div>
+            <h3 className="font-bold text-base mb-2" style={{ color: NAVY, fontFamily: "Montserrat, sans-serif" }}>Expert Team</h3>
+            <p className="text-gray-600 text-sm leading-relaxed max-w-xs mx-auto">
+              Qualified, certified and experienced experts who always deliver results without compromising on quality.
             </p>
           </div>
-          <div className="flex flex-col items-center px-4">
-            <Award size={48} style={{ color: ORANGE }} className="mb-4" />
-            <p className="text-gray-700 text-sm md:text-base leading-relaxed">
-              We have years of comprehensive expertise and experience in serving the needs of our residential, commercial, and industrial clients.
+          <div className="flex flex-col items-center px-6 py-10 md:py-0">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: `${ORANGE}22` }}>
+              <Award size={30} style={{ color: ORANGE_DARK }} />
+            </div>
+            <h3 className="font-bold text-base mb-2" style={{ color: NAVY, fontFamily: "Montserrat, sans-serif" }}>Years of Experience</h3>
+            <p className="text-gray-600 text-sm leading-relaxed max-w-xs mx-auto">
+              Comprehensive expertise serving residential, commercial and industrial clients across all 9 provinces.
             </p>
           </div>
-          <div className="flex flex-col items-center px-4">
-            <Handshake size={48} style={{ color: ORANGE }} className="mb-4" />
-            <p className="text-gray-700 text-sm md:text-base leading-relaxed">
-              Guaranteed satisfaction. We aim to please! You always get excellent service from our highly skilled team. Effective problem solving skills!
+          <div className="flex flex-col items-center px-6 pt-10 md:pt-0">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: `${ORANGE}22` }}>
+              <Handshake size={30} style={{ color: ORANGE_DARK }} />
+            </div>
+            <h3 className="font-bold text-base mb-2" style={{ color: NAVY, fontFamily: "Montserrat, sans-serif" }}>Guaranteed Satisfaction</h3>
+            <p className="text-gray-600 text-sm leading-relaxed max-w-xs mx-auto">
+              We aim to please. Excellent service from a highly skilled team with effective problem solving skills.
             </p>
           </div>
         </div>
@@ -332,46 +376,68 @@ function AboutSection() {
       <section id="about" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-start">
-            {/* Left: Image */}
+            {/* Left: Image with experience badge */}
             <div className="relative">
               <img
                 src={aboutImg}
-                alt="Govan Electrical Team"
-                className="w-full h-auto object-cover shadow-lg"
+                alt="Govan Electrical professional team performing electrical installation in South Africa"
+                className="w-full h-auto object-cover shadow-lg rounded-xl"
+                loading="lazy"
+                decoding="async"
               />
+              <div
+                className="absolute bottom-6 right-6 rounded-xl p-4 text-center shadow-2xl"
+                style={{ backgroundColor: NAVY }}
+              >
+                <p className="text-3xl font-extrabold leading-none" style={{ color: ORANGE, fontFamily: "Montserrat, sans-serif" }}>12+</p>
+                <p className="text-white text-xs font-semibold uppercase tracking-wide mt-1 opacity-80">Years Experience</p>
+              </div>
             </div>
 
             {/* Right: Text */}
             <div>
+              <p className="text-sm font-bold uppercase tracking-widest mb-3" style={{ color: ORANGE_DARK }}>Who We Are</p>
               <h2 className="text-4xl font-extrabold" style={{ fontFamily: "Montserrat, sans-serif" }}>
                 <span style={{ color: ORANGE }}>About</span> <span style={{ color: NAVY }}>Govan Electrical</span>
               </h2>
               <div className="w-16 h-1 mt-2 mb-8" style={{ backgroundColor: ACTION_GREEN }} />
 
-              <div className="space-y-6 text-gray-700 leading-relaxed">
+              <div className="space-y-4 text-gray-700 leading-relaxed text-sm md:text-base">
                 <p>
-                  Welcome to Govan Electrical, your trusted partner for all your solar, electrical and diesel power generator needs.
+                  Welcome to <strong>Govan Electrical</strong>, your trusted partner for all your solar, electrical and diesel power generator needs.
                 </p>
                 <p>
                   We are committed to providing sustainable solutions that harness the power of the sun, while also servicing your existing electrical systems.
                 </p>
                 <p>
-                  As the world moves towards a green future, diesel generators, machinery and vehicles are still with us for a very long time and still need our attention as they still play an important role in our lives.
+                  As the world moves towards a green future, diesel generators and industrial machinery still play an important role — and still need our full attention and expertise.
                 </p>
                 <p>
-                  Our mission is to provide a service that covers all your energy needs, services that are accessible, reliable, and cost-effective for homes, businesses, and industries alike.
+                  Our mission is to provide energy solutions that are accessible, reliable, and cost-effective for homes, businesses, and industries alike. We strive to deliver superior results through professionalism, integrity, and a commitment to excellence in everything we do.
                 </p>
-                <p>
-                  We strive to deliver superior results through professionalism, integrity, and a commitment to excellence in everything we do.
-                </p>
+              </div>
+
+              {/* Key bullet points */}
+              <div className="mt-6 space-y-3">
+                {[
+                  "Registered & certified electricians",
+                  "Free system monitoring on all installed systems",
+                  "Nationwide coverage — all 9 provinces",
+                  "4000+ successful installations completed",
+                ].map((point) => (
+                  <div key={point} className="flex items-center gap-3">
+                    <CheckCircle size={18} style={{ color: ACTION_GREEN }} className="shrink-0" />
+                    <span className="text-sm text-gray-700 font-medium">{point}</span>
+                  </div>
+                ))}
               </div>
 
               <a
                 href="#services"
-                className="inline-block mt-8 px-8 py-3 font-bold text-white shadow transition-opacity hover:opacity-90"
-                style={{ backgroundColor: ORANGE }}
+                className="inline-block mt-8 px-8 py-3 font-bold rounded shadow transition-opacity hover:opacity-90"
+                style={{ backgroundColor: ORANGE, color: NAVY }}
               >
-                View More
+                Explore Our Services
               </a>
             </div>
           </div>
@@ -382,6 +448,7 @@ function AboutSection() {
 }
 
 function ServicesSection() {
+  const { openLeadForm } = useLeadForm();
   return (
     <section id="services" className="py-20" style={{ backgroundColor: "#f8f9fa" }}>
       <div className="max-w-7xl mx-auto px-4">
@@ -419,15 +486,15 @@ function ServicesSection() {
                 {s.title}
               </h3>
               <p className="text-gray-600 text-sm leading-relaxed mb-5">{s.desc}</p>
-              <a
-                href="#contact"
-                className="inline-flex items-center gap-1 text-sm font-bold text-white px-5 py-2 rounded transition"
-                style={{ backgroundColor: ORANGE }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = GREEN; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = ORANGE; }}
+              <button
+                onClick={() => openLeadForm(s.title)}
+                className="inline-flex items-center gap-1 text-sm font-bold px-5 py-2 rounded transition"
+                style={{ backgroundColor: ORANGE, color: NAVY }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = ORANGE_DARK; (e.currentTarget as HTMLElement).style.color = "#fff"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = ORANGE; (e.currentTarget as HTMLElement).style.color = NAVY; }}
               >
                 Get Quote
-              </a>
+              </button>
             </div>
           ))}
         </div>
@@ -520,116 +587,6 @@ function WhyUsSection() {
   );
 }
 
-function TestimonialsSection() {
-  const [current, setCurrent] = useState(0);
-
-  const prev = () => setCurrent((c) => (c === 0 ? TESTIMONIALS.length - 1 : c - 1));
-  const next = () => setCurrent((c) => (c + 1) % TESTIMONIALS.length);
-
-  const t = TESTIMONIALS[current];
-
-  return (
-    <section id="testimonials" className="py-20" style={{ backgroundColor: "#f8f9fa" }}>
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="text-center mb-14">
-          <p className="text-sm font-bold uppercase tracking-widest mb-3" style={{ color: ORANGE_DARK }}>
-            Client Reviews
-          </p>
-          <h2
-            className="text-4xl font-extrabold"
-            style={{ color: NAVY, fontFamily: "Montserrat, sans-serif" }}
-          >
-            What Our Clients Say
-          </h2>
-          <div className="flex items-center justify-center gap-2 mt-4">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} size={20} fill={ORANGE} style={{ color: ORANGE }} />
-            ))}
-            <span className="font-bold ml-2" style={{ color: NAVY }}>4.9 / 5</span>
-            <span className="text-gray-500 text-sm">from Google Reviews</span>
-          </div>
-        </div>
-
-        <div className="max-w-3xl mx-auto">
-          <div
-            className="rounded-2xl p-10 text-white relative overflow-hidden"
-            style={{ backgroundColor: NAVY, boxShadow: "0 8px 40px rgba(28,54,100,0.3)" }}
-          >
-            {/* Quote marks */}
-            <span
-              className="absolute top-4 left-6 text-8xl font-serif leading-none opacity-20"
-              style={{ color: ORANGE }}
-            >
-              "
-            </span>
-
-            <div className="flex gap-1 mb-6">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} size={18} fill={ORANGE} style={{ color: ORANGE }} />
-              ))}
-            </div>
-
-            <p className="text-lg leading-relaxed mb-8 opacity-90 italic">
-              "{t.text}"
-            </p>
-
-            <div className="flex items-center gap-4">
-              <div
-                className="w-12 h-12 rounded-full flex items-center justify-center font-bold text-white text-lg"
-                style={{ backgroundColor: ORANGE }}
-              >
-                {t.name.charAt(0)}
-              </div>
-              <div>
-                <p className="font-bold text-white">{t.name}</p>
-                <p className="text-sm opacity-60">{t.role}</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Controls */}
-          <div className="flex items-center justify-center gap-6 mt-8">
-            <button
-              onClick={prev}
-              className="w-10 h-10 rounded-full flex items-center justify-center border-2 transition"
-              style={{ borderColor: NAVY, color: NAVY }}
-              onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.backgroundColor = NAVY; el.style.color = "#fff"; }}
-              onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.backgroundColor = "transparent"; el.style.color = NAVY; }}
-            >
-              <ChevronLeft size={18} />
-            </button>
-
-            <div className="flex gap-2">
-              {TESTIMONIALS.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrent(i)}
-                  className="rounded-full transition-all"
-                  style={{
-                    width: i === current ? 28 : 8,
-                    height: 8,
-                    backgroundColor: i === current ? ORANGE : "#ccc",
-                  }}
-                />
-              ))}
-            </div>
-
-            <button
-              onClick={next}
-              className="w-10 h-10 rounded-full flex items-center justify-center border-2 transition"
-              style={{ borderColor: NAVY, color: NAVY }}
-              onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.backgroundColor = NAVY; el.style.color = "#fff"; }}
-              onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.backgroundColor = "transparent"; el.style.color = NAVY; }}
-            >
-              <ChevronRight size={18} />
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function ContactSection() {
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", service: "", message: "" });
 
@@ -638,9 +595,12 @@ function ContactSection() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const [submitted, setSubmitted] = useState(false);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Thank you for your inquiry! We will contact you shortly.");
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 5000);
     setFormData({ name: "", email: "", phone: "", service: "", message: "" });
   };
 
@@ -765,15 +725,23 @@ function ContactSection() {
                 rows={4}
                 style={{ ...inputStyle, resize: "vertical" }}
               />
+              {submitted && (
+                <div className="flex items-center gap-2 p-3 rounded-lg bg-green-50 border border-green-200 text-green-700 text-sm font-semibold">
+                  <CheckCircle size={18} /> Thank you! We'll be in touch shortly.
+                </div>
+              )}
               <button
                 type="submit"
                 className="w-full py-3 font-bold text-white rounded-lg transition-all"
                 style={{ backgroundColor: ORANGE }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = GREEN; }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = ORANGE_DARK; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = ORANGE; }}
               >
                 Send Inquiry
               </button>
+              <p className="text-xs text-center opacity-60 mt-2">
+                Your information is protected under POPIA. We never share your details.
+              </p>
             </form>
           </div>
         </div>
@@ -782,4 +750,336 @@ function ContactSection() {
   );
 }
 
+// ─── Brands / Partners Strip ────────────────────────────────────────────────
+const BRANDS = [
+  { name: "Deye", tag: "Inverters" },
+  { name: "Sunsynk", tag: "Inverters" },
+  { name: "Luxpower", tag: "Inverters" },
+  { name: "Felicity", tag: "Solar Systems" },
+  { name: "Dyness", tag: "Batteries" },
+  { name: "SVOLT", tag: "Batteries" },
+  { name: "Ecco", tag: "Inverters" },
+];
 
+function BrandsSection() {
+  return (
+    <section className="py-12 bg-white border-y border-gray-100">
+      <div className="max-w-7xl mx-auto px-4">
+        <p className="text-center text-xs font-bold uppercase tracking-widest mb-8" style={{ color: ORANGE_DARK }}>
+          Trusted Brands We Install
+        </p>
+        <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
+          {BRANDS.map((b) => (
+            <div
+              key={b.name}
+              className="flex flex-col items-center px-5 py-3 rounded-xl border-2 hover:shadow-md transition-all hover:-translate-y-0.5"
+              style={{ borderColor: "#E5E7EB" }}
+            >
+              <span
+                className="font-extrabold text-lg md:text-xl tracking-tight"
+                style={{ color: NAVY, fontFamily: "Montserrat, sans-serif" }}
+              >
+                {b.name}
+              </span>
+              <span className="text-xs font-semibold mt-0.5" style={{ color: ORANGE_DARK }}>
+                {b.tag}
+              </span>
+            </div>
+          ))}
+          <div
+            className="flex flex-col items-center px-5 py-3 rounded-xl border-2 border-dashed hover:shadow-md transition-all"
+            style={{ borderColor: ORANGE }}
+          >
+            <span className="font-extrabold text-lg tracking-tight" style={{ color: ORANGE_DARK, fontFamily: "Montserrat, sans-serif" }}>
+              +More
+            </span>
+            <span className="text-xs font-semibold mt-0.5 text-gray-500">Brands</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Solar Savings Calculator ────────────────────────────────────────────────
+function SavingsCalculatorSection() {
+  const [bill, setBill] = useState(2500);
+  const [animated, setAnimated] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setAnimated(true); },
+      { threshold: 0.2 }
+    );
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, []);
+
+  // Calculation logic
+  const savingsPct = 0.78; // average 78% reduction with hybrid solar
+  const monthlySavings = Math.round(bill * savingsPct);
+  const annualSavings = monthlySavings * 12;
+  const tenYearSavings = annualSavings * 10;
+
+  // Recommend system size based on bill
+  const systemKw = bill < 1500 ? 3.5 : bill < 2500 ? 5 : bill < 4000 ? 8 : bill < 6000 ? 10 : 16;
+  const systemPrice = bill < 1500 ? 29900 : bill < 2500 ? 49900 : bill < 4000 ? 74990 : bill < 6000 ? 89900 : 169900;
+  const paybackYears = (systemPrice / annualSavings).toFixed(1);
+
+  return (
+    <section ref={ref} className="py-20" style={{ background: `linear-gradient(135deg, ${NAVY} 0%, #2a2a2a 100%)` }}>
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 mb-3">
+            <Calculator size={20} style={{ color: ORANGE }} />
+            <p className="text-sm font-bold uppercase tracking-widest" style={{ color: ORANGE }}>
+              Solar Savings Estimator
+            </p>
+          </div>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-white" style={{ fontFamily: "Montserrat, sans-serif" }}>
+            How Much Could You Save?
+          </h2>
+          <p className="text-white opacity-70 mt-3 max-w-xl mx-auto">
+            Move the slider to match your average monthly electricity bill and see your estimated savings.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-10 items-center max-w-5xl mx-auto">
+          {/* Input */}
+          <div className="bg-white/10 rounded-2xl p-8 backdrop-blur-sm">
+            <label className="block text-white font-bold mb-2 text-sm uppercase tracking-wide">
+              Monthly Electricity Bill
+            </label>
+            <div className="text-5xl font-extrabold mb-6" style={{ color: ORANGE, fontFamily: "Montserrat, sans-serif" }}>
+              R{bill.toLocaleString()}
+            </div>
+            <input
+              type="range"
+              min={500}
+              max={15000}
+              step={100}
+              value={bill}
+              onChange={(e) => setBill(Number(e.target.value))}
+              className="w-full h-2 rounded-full appearance-none cursor-pointer"
+              style={{ accentColor: ORANGE }}
+              aria-label="Monthly electricity bill slider"
+            />
+            <div className="flex justify-between text-white opacity-50 text-xs mt-2">
+              <span>R500</span><span>R15,000</span>
+            </div>
+
+            <div className="mt-6 p-4 rounded-xl" style={{ backgroundColor: "rgba(255,215,0,0.12)", border: "1px solid rgba(255,215,0,0.3)" }}>
+              <p className="text-white text-sm font-semibold mb-1">Recommended System</p>
+              <p className="font-extrabold text-xl" style={{ color: ORANGE, fontFamily: "Montserrat, sans-serif" }}>
+                {systemKw}kW Solar System
+              </p>
+              <p className="text-white opacity-60 text-xs mt-1">Starting from R{systemPrice.toLocaleString()}</p>
+            </div>
+          </div>
+
+          {/* Results */}
+          <div className="grid grid-cols-2 gap-4">
+            {[
+              { icon: TrendingUp, label: "Monthly Savings", value: `R${monthlySavings.toLocaleString()}`, sub: "per month" },
+              { icon: BadgeCheck, label: "Annual Savings", value: `R${annualSavings.toLocaleString()}`, sub: "per year" },
+              { icon: Clock, label: "Payback Period", value: `${paybackYears} yrs`, sub: "to break even" },
+              { icon: Star, label: "10-Year Savings", value: `R${tenYearSavings.toLocaleString()}`, sub: "total return" },
+            ].map((item) => (
+              <div
+                key={item.label}
+                className="rounded-2xl p-5 flex flex-col"
+                style={{ backgroundColor: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.1)" }}
+              >
+                <item.icon size={20} className="mb-3" style={{ color: ORANGE }} />
+                <p className="text-white opacity-60 text-xs font-semibold uppercase tracking-wide mb-1">{item.label}</p>
+                <p className="font-extrabold text-xl text-white" style={{ fontFamily: "Montserrat, sans-serif" }}>
+                  {animated ? item.value : "—"}
+                </p>
+                <p className="text-white opacity-40 text-xs mt-0.5">{item.sub}</p>
+              </div>
+            ))}
+
+            <div className="col-span-2 mt-2">
+              <Link href="/solar-packages">
+                <a
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-sm uppercase tracking-wide transition-opacity hover:opacity-90"
+                  style={{ backgroundColor: ORANGE, color: NAVY }}
+                >
+                  View Packages &amp; Prices
+                </a>
+              </Link>
+              <p className="text-center text-white opacity-40 text-xs mt-3">
+                * Estimates based on average SA grid tariffs. Actual savings vary.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── FAQ Accordion ───────────────────────────────────────────────────────────
+const FAQS = [
+  {
+    q: "How long does a solar installation take?",
+    a: "Most residential solar installations are completed within 1–2 days. Larger commercial systems may take 3–5 days. We minimise disruption and clean up fully after every job.",
+  },
+  {
+    q: "What warranties do your solar systems come with?",
+    a: "All our solar systems include manufacturer warranties of 3–10 years depending on the brand, plus our workmanship warranty on the installation itself. Deye and Sunsynk systems carry 10-year warranties.",
+  },
+  {
+    q: "Do you service all provinces in South Africa?",
+    a: "Yes! We serve clients across all 9 provinces of South Africa. Our head office is in Pretoria (Gauteng), but we regularly travel to KZN, Western Cape, Mpumalanga and beyond.",
+  },
+  {
+    q: "Can I start with a backup system and add solar panels later?",
+    a: "Absolutely. All our systems are fully upgradable. You can start with an inverter-and-battery backup system now and add solar panels at any point — the system grows with your needs and budget.",
+  },
+  {
+    q: "Do you issue a Certificate of Compliance (CoC)?",
+    a: "Yes, every electrical installation includes a valid Certificate of Compliance (CoC) as required by South African law. This is essential for insurance validity and property sales.",
+  },
+  {
+    q: "What size solar system do I need?",
+    a: "A typical South African home uses a 5–10kW system. The right size depends on your monthly electricity usage, number of appliances, and budget. Use our savings calculator above or contact us for a free assessment.",
+  },
+  {
+    q: "Will my solar system work during load-shedding?",
+    a: "Yes! Our hybrid and battery backup systems switch to battery power instantly when the grid goes down — usually within milliseconds. You won't even notice the power going out.",
+  },
+  {
+    q: "Do you offer financing or payment plans?",
+    a: "We work with financing partners to make solar accessible. Contact us to discuss payment options. Remember — your monthly savings often exceed your monthly loan repayment, making solar cash-flow positive from day one.",
+  },
+];
+
+function FAQSection() {
+  const [open, setOpen] = useState<number | null>(null);
+
+  return (
+    <section id="faq" className="py-20 bg-white">
+      <div className="max-w-4xl mx-auto px-4">
+        <div className="text-center mb-14">
+          <p className="text-sm font-bold uppercase tracking-widest mb-3" style={{ color: ORANGE_DARK }}>
+            Got Questions?
+          </p>
+          <h2 className="text-3xl md:text-4xl font-extrabold" style={{ color: NAVY, fontFamily: "Montserrat, sans-serif" }}>
+            Frequently Asked Questions
+          </h2>
+        </div>
+
+        <div className="space-y-3">
+          {FAQS.map((faq, i) => (
+            <div
+              key={i}
+              className="rounded-xl overflow-hidden border transition-all"
+              style={{ borderColor: open === i ? ORANGE : "#E5E7EB" }}
+            >
+              <button
+                className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left font-bold text-sm md:text-base"
+                style={{ color: NAVY, backgroundColor: open === i ? "#FFFDF0" : "white" }}
+                onClick={() => setOpen(open === i ? null : i)}
+                aria-expanded={open === i}
+              >
+                <span>{faq.q}</span>
+                <ChevronDown
+                  size={20}
+                  className="shrink-0 transition-transform duration-200"
+                  style={{
+                    color: ORANGE_DARK,
+                    transform: open === i ? "rotate(180deg)" : "rotate(0deg)",
+                  }}
+                />
+              </button>
+              {open === i && (
+                <div className="px-6 pb-5 text-gray-600 text-sm leading-relaxed" style={{ backgroundColor: "#FFFDF0" }}>
+                  {faq.a}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <div className="text-center mt-10">
+          <p className="text-gray-500 text-sm mb-4">Still have questions? We're happy to help.</p>
+          <a
+            href="#contact"
+            className="inline-flex items-center gap-2 px-8 py-3 rounded-lg font-bold text-sm transition-opacity hover:opacity-90"
+            style={{ backgroundColor: ORANGE, color: NAVY }}
+          >
+            <Phone size={16} /> Ask Us Anything
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Areas We Serve ──────────────────────────────────────────────────────────
+const PROVINCES = [
+  { name: "Gauteng", note: "Head Office" },
+  { name: "KwaZulu-Natal", note: "" },
+  { name: "Western Cape", note: "" },
+  { name: "Eastern Cape", note: "" },
+  { name: "Mpumalanga", note: "" },
+  { name: "Limpopo", note: "" },
+  { name: "North West", note: "" },
+  { name: "Free State", note: "" },
+  { name: "Northern Cape", note: "" },
+];
+
+function AreasWeServeSection() {
+  return (
+    <section className="py-16" style={{ backgroundColor: "#f8f9fa" }}>
+      <div className="max-w-7xl mx-auto px-4 text-center">
+        <div className="inline-flex items-center gap-2 mb-3">
+          <MapPinned size={18} style={{ color: ORANGE_DARK }} />
+          <p className="text-sm font-bold uppercase tracking-widest" style={{ color: ORANGE_DARK }}>
+            Nationwide Coverage
+          </p>
+        </div>
+        <h2 className="text-3xl md:text-4xl font-extrabold mb-4" style={{ color: NAVY, fontFamily: "Montserrat, sans-serif" }}>
+          Areas We Serve
+        </h2>
+        <p className="text-gray-600 max-w-xl mx-auto mb-10">
+          Govan Electrical installs and services clients across all 9 provinces of South Africa. No matter where you are, we've got you covered.
+        </p>
+
+        <div className="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto">
+          {PROVINCES.map((p) => (
+            <div
+              key={p.name}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-full font-semibold text-sm border-2 transition-all hover:-translate-y-0.5 hover:shadow-md"
+              style={{
+                borderColor: p.note ? ORANGE : "#E5E7EB",
+                backgroundColor: p.note ? ORANGE : "white",
+                color: p.note ? NAVY : "#333",
+              }}
+            >
+              <MapPin size={14} className="shrink-0" />
+              <span>{p.name}</span>
+              {p.note && <span className="text-xs font-bold opacity-70">({p.note})</span>}
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto text-center">
+          {[
+            { icon: Users, label: "300+", sub: "Happy Clients Nationwide" },
+            { icon: MapPin, label: "9/9", sub: "Provinces Covered" },
+            { icon: CheckCircle, label: "4000+", sub: "Installations Completed" },
+          ].map((item) => (
+            <div key={item.label} className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+              <item.icon size={28} className="mx-auto mb-2" style={{ color: ORANGE_DARK }} />
+              <p className="text-2xl font-extrabold" style={{ color: NAVY, fontFamily: "Montserrat, sans-serif" }}>{item.label}</p>
+              <p className="text-gray-500 text-sm">{item.sub}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

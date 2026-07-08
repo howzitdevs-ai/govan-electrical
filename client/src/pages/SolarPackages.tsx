@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Search, Info, Mail } from "lucide-react";
 import { Layout } from "@/components/Layout";
+import { useSEO } from "@/hooks/useSEO";
+import { useLeadForm } from "@/contexts/LeadFormContext";
 import solar1 from "@/images/Solor/solar-1.png";
 import solar2 from "@/images/Solor/solar-2.png";
 import solar3 from "@/images/Solor/solar-3.png";
@@ -431,11 +433,54 @@ function matchesFilter(pkg: any, filter: string): boolean {
   }
 }
 
+const PACKAGES_SCHEMA = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Solar System Packages South Africa",
+    "serviceType": "Solar Energy Installation",
+    "provider": {
+      "@type": "LocalBusiness",
+      "@id": "https://www.govanelectrical.co.za/#business",
+      "name": "Govan Electrical"
+    },
+    "description": "Browse 23+ solar system packages ranging from 3.5kW to 20kW. Brands include Deye, Sunsynk, Luxpower and Felicity. All packages include professional installation and COC certificate.",
+    "areaServed": { "@type": "Country", "name": "South Africa" },
+    "offers": [
+      { "@type": "Offer", "name": "3.5kW Solar System", "price": "29900", "priceCurrency": "ZAR", "availability": "https://schema.org/InStock" },
+      { "@type": "Offer", "name": "5kW Solar System (Budget)", "price": "39900", "priceCurrency": "ZAR", "availability": "https://schema.org/InStock" },
+      { "@type": "Offer", "name": "5kW Deye Solar System", "price": "57000", "priceCurrency": "ZAR", "availability": "https://schema.org/InStock" },
+      { "@type": "Offer", "name": "8kW Felicity Solar System", "price": "74990", "priceCurrency": "ZAR", "availability": "https://schema.org/InStock" },
+      { "@type": "Offer", "name": "10kW Luxpower Solar System", "price": "89900", "priceCurrency": "ZAR", "availability": "https://schema.org/InStock" },
+      { "@type": "Offer", "name": "16kW Deye Off-Grid Solar System", "price": "169900", "priceCurrency": "ZAR", "availability": "https://schema.org/InStock" }
+    ],
+    "url": "https://www.govanelectrical.co.za/solar-packages"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.govanelectrical.co.za/" },
+      { "@type": "ListItem", "position": 2, "name": "Solar Packages", "item": "https://www.govanelectrical.co.za/solar-packages" }
+    ]
+  }
+];
+
 export default function SolarPackages() {
+  useSEO({
+    title: "Solar System Packages & Prices South Africa | Govan Electrical",
+    description: "Browse 23+ solar packages from 3.5kW to 20kW. Prices from R29,900. Brands: Deye, Sunsynk, Luxpower, Felicity. Installation & COC included. Beat load-shedding today.",
+    keywords: "solar packages South Africa, solar system prices, 5kW solar system price, 10kW solar system, Deye solar, Sunsynk inverter, Luxpower solar, solar installation cost South Africa",
+    canonical: "/solar-packages",
+    schema: PACKAGES_SCHEMA,
+  });
+
+  const { openLeadForm } = useLeadForm();
   const [activeFilter, setActiveFilter] = useState("All Packages");
   const [searchQuery, setSearchQuery] = useState("");
   const [formData, setFormData] = useState({ lastName: "", phone: "", email: "", package: "", province: "", timeline: "" });
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -447,28 +492,42 @@ export default function SolarPackages() {
     e.preventDefault();
     const errors: Record<string, string> = {};
     if (!formData.lastName) errors.lastName = "Last Name is required";
-    if (!formData.phone) errors.phone = "Phone is required";
-    if (!formData.email) errors.email = "Email is required";
-    if (!formData.package) errors.package = "Select a package is required";
-    if (!formData.province) errors.province = "Which province are you in? is required";
-    if (!formData.timeline) errors.timeline = "How soon do you need the installation? is required";
+    if (!formData.phone) errors.phone = "Phone number is required";
+    if (!formData.email) errors.email = "Email address is required";
+    if (!formData.package) errors.package = "Please select a package";
+    if (!formData.province) errors.province = "Please select your province";
+    if (!formData.timeline) errors.timeline = "Please tell us your installation timeline";
 
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
       return;
     }
 
-    alert("Form submitted successfully! We will get back to you shortly.");
+    setFormSubmitted(true);
     setFormData({ lastName: "", phone: "", email: "", package: "", province: "", timeline: "" });
+    setTimeout(() => setFormSubmitted(false), 6000);
   };
 
   return (
     <Layout>
-      <div className="py-10 md:py-20 bg-white min-h-screen">
+      {/* Hero */}
+      <section className="py-16 md:py-24 text-white text-center" style={{ background: `linear-gradient(135deg, ${NAVY} 0%, #2a2a2a 100%)` }}>
+        <div className="max-w-7xl mx-auto px-4">
+          <p className="text-sm font-bold uppercase tracking-widest mb-3" style={{ color: ORANGE }}>Solar Packages</p>
+          <h1 className="text-4xl sm:text-5xl font-extrabold mb-4" style={{ fontFamily: "Montserrat, sans-serif" }}>
+            Choose From Our <span style={{ color: ORANGE }}>Solar Systems</span>
+          </h1>
+          <p className="text-base md:text-lg max-w-2xl mx-auto opacity-80">
+            From entry-level backup systems to full off-grid solar installations — we have a package for every budget and need.
+          </p>
+        </div>
+      </section>
+
+      <div className="py-10 md:py-16 bg-white min-h-screen">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          {/* Header */}
-          <h2 className="text-2xl md:text-4xl font-extrabold mb-3" style={{ fontFamily: "Montserrat, sans-serif" }}>
-            <span style={{ color: ORANGE_DARK }}>Choose</span> <span style={{ color: NAVY }}>From Our Systems</span>
+          {/* Sub Header */}
+          <h2 className="text-xl md:text-3xl font-extrabold mb-3" style={{ fontFamily: "Montserrat, sans-serif" }}>
+            <span style={{ color: ORANGE_DARK }}>Browse</span> <span style={{ color: NAVY }}>All Systems</span>
           </h2>
           <div className="w-24 md:w-40 h-1 mx-auto mb-6 md:mb-10" style={{ backgroundColor: ORANGE }} />
 
@@ -547,7 +606,7 @@ export default function SolarPackages() {
                 <div className="h-64 bg-gray-50 flex items-center justify-center relative border-b-4 overflow-hidden" style={{ borderBottomColor: ORANGE }}>
                   {/* @ts-ignore */}
                   {pkg.image ? (
-                    <img src={pkg.image} alt={pkg.title} className="w-full h-full object-cover" />
+                    <img src={pkg.image} alt={`${pkg.title} — Solar System Package`} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                   ) : (
                     <div className="text-gray-400 flex flex-col items-center">
                       <Info size={40} className="mb-2 opacity-50" />
@@ -587,9 +646,10 @@ export default function SolarPackages() {
                     </span>
                   </div>
                   
-                  <button 
+                  <button
                     className="w-full py-2.5 rounded font-bold transition-opacity hover:opacity-90"
                     style={{ backgroundColor: ORANGE, color: NAVY }}
+                    onClick={() => openLeadForm(pkg.title)}
                   >
                     Request A Quote
                   </button>
@@ -601,118 +661,153 @@ export default function SolarPackages() {
           })()}
 
           {/* Quote Form */}
-          <div className="max-w-3xl mx-auto mt-20 mb-8 bg-white text-left">
-            <form onSubmit={handleFormSubmit} className="space-y-6">
-              {/* Last Name */}
-              <div>
-                <input
-                  type="text"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleFormChange}
-                  placeholder="Last Name"
-                  className={`w-full p-3 border rounded outline-none ${formErrors.lastName ? "border-red-500" : "border-gray-300 focus:border-blue-500"}`}
-                />
-                {formErrors.lastName && <p className="text-red-500 text-sm mt-1">{formErrors.lastName}</p>}
-              </div>
+          <div
+            className="max-w-3xl mx-auto mt-20 mb-8 rounded-2xl overflow-hidden"
+            style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.12)" }}
+          >
+            {/* Form header */}
+            <div className="px-8 py-6 text-center" style={{ backgroundColor: NAVY }}>
+              <h2 className="text-2xl font-extrabold text-white mb-1" style={{ fontFamily: "Montserrat, sans-serif" }}>
+                Request a <span style={{ color: ORANGE }}>Free Quote</span>
+              </h2>
+              <p className="text-white opacity-70 text-sm">Fill in your details and we'll get back to you within 24 hours.</p>
+            </div>
 
-              {/* Phone */}
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Phone *</label>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleFormChange}
-                  placeholder="Phone"
-                  className={`w-full p-3 border rounded outline-none ${formErrors.phone ? "border-red-500" : "border-gray-300 focus:border-blue-500"}`}
-                />
-                {formErrors.phone && <p className="text-red-500 text-sm mt-1">{formErrors.phone}</p>}
-              </div>
-
-              {/* Email */}
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Email *</label>
-                <div className="relative">
-                  <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
-                    <Mail size={18} />
-                  </span>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleFormChange}
-                    placeholder="Email"
-                    className={`w-full p-3 pl-10 border rounded outline-none ${formErrors.email ? "border-red-500" : "border-gray-300 focus:border-blue-500"}`}
-                  />
+            <div className="bg-white px-8 py-8">
+              {formSubmitted && (
+                <div className="mb-6 flex items-center gap-2 p-4 rounded-lg bg-green-50 border border-green-200 text-green-700 text-sm font-semibold">
+                  ✓ Thank you! Your quote request was received. We'll be in touch within 24 hours.
                 </div>
-                {formErrors.email && <p className="text-red-500 text-sm mt-1">{formErrors.email}</p>}
-              </div>
+              )}
+              <form onSubmit={handleFormSubmit} className="space-y-5">
+                {/* Last Name */}
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">Last Name *</label>
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleFormChange}
+                    placeholder="Your Last Name"
+                    className={`w-full p-3 border rounded outline-none transition-colors ${formErrors.lastName ? "border-red-500 bg-red-50" : "border-gray-300"}`}
+                    style={{ boxShadow: formErrors.lastName ? undefined : undefined }}
+                    onFocus={(e) => { if (!formErrors.lastName) e.target.style.borderColor = ORANGE; }}
+                    onBlur={(e) => { e.target.style.borderColor = formErrors.lastName ? "#ef4444" : "#d1d5db"; }}
+                  />
+                  {formErrors.lastName && <p className="text-red-500 text-xs mt-1">⚠ {formErrors.lastName}</p>}
+                </div>
 
-              {/* Select Package */}
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Select a package *</label>
-                <select
-                  name="package"
-                  value={formData.package}
-                  onChange={handleFormChange}
-                  className={`w-full p-3 border rounded outline-none bg-white ${formErrors.package ? "border-red-500" : "border-gray-300 focus:border-blue-500"} ${!formData.package ? "text-gray-400" : "text-gray-800"}`}
-                >
-                  <option value="" disabled>Select a package</option>
-                  {PACKAGES.map((pkg) => (
-                    <option key={pkg.id} value={pkg.title} className="text-gray-800">
-                      {pkg.title} — {pkg.price}
-                    </option>
-                  ))}
-                </select>
-                {formErrors.package && <p className="text-red-500 text-sm mt-1">{formErrors.package}</p>}
-              </div>
+                {/* Phone */}
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">Phone Number *</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleFormChange}
+                    placeholder="e.g. 082 123 4567"
+                    className={`w-full p-3 border rounded outline-none transition-colors ${formErrors.phone ? "border-red-500 bg-red-50" : "border-gray-300"}`}
+                    onFocus={(e) => { if (!formErrors.phone) e.target.style.borderColor = ORANGE; }}
+                    onBlur={(e) => { e.target.style.borderColor = formErrors.phone ? "#ef4444" : "#d1d5db"; }}
+                  />
+                  {formErrors.phone && <p className="text-red-500 text-xs mt-1">⚠ {formErrors.phone}</p>}
+                </div>
 
-              {/* Province */}
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">Which province are you in? *</label>
-                <select
-                  name="province"
-                  value={formData.province}
-                  onChange={handleFormChange}
-                  className={`w-full p-3 border rounded outline-none bg-white ${formErrors.province ? "border-red-500" : "border-gray-300 focus:border-blue-500"} ${!formData.province ? "text-gray-400" : "text-gray-800"}`}
-                >
-                  <option value="" disabled>Select province</option>
-                  {["Eastern Cape", "Free State", "Gauteng", "KwaZulu-Natal", "Limpopo", "Mpumalanga", "North West", "Northern Cape", "Western Cape"].map(prov => (
-                    <option key={prov} value={prov} className="text-gray-800">{prov}</option>
-                  ))}
-                </select>
-                {formErrors.province && <p className="text-red-500 text-sm mt-1">{formErrors.province}</p>}
-              </div>
+                {/* Email */}
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">Email Address *</label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+                      <Mail size={18} />
+                    </span>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleFormChange}
+                      placeholder="your@email.com"
+                      className={`w-full p-3 pl-10 border rounded outline-none transition-colors ${formErrors.email ? "border-red-500 bg-red-50" : "border-gray-300"}`}
+                      onFocus={(e) => { if (!formErrors.email) e.target.style.borderColor = ORANGE; }}
+                      onBlur={(e) => { e.target.style.borderColor = formErrors.email ? "#ef4444" : "#d1d5db"; }}
+                    />
+                  </div>
+                  {formErrors.email && <p className="text-red-500 text-xs mt-1">⚠ {formErrors.email}</p>}
+                </div>
 
-              {/* Timeline */}
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-1">How soon do you need the installation? *</label>
-                <input
-                  type="text"
-                  name="timeline"
-                  value={formData.timeline}
-                  onChange={handleFormChange}
-                  placeholder="Within the next week"
-                  className={`w-full p-3 border rounded outline-none ${formErrors.timeline ? "border-red-500" : "border-gray-300 focus:border-blue-500"}`}
-                />
-                {formErrors.timeline && <p className="text-red-500 text-sm mt-1">{formErrors.timeline}</p>}
-              </div>
+                {/* Select Package */}
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">Interested Package *</label>
+                  <select
+                    name="package"
+                    value={formData.package}
+                    onChange={handleFormChange}
+                    className={`w-full p-3 border rounded outline-none bg-white transition-colors ${formErrors.package ? "border-red-500 bg-red-50" : "border-gray-300"} ${!formData.package ? "text-gray-400" : "text-gray-800"}`}
+                    onFocus={(e) => { if (!formErrors.package) e.target.style.borderColor = ORANGE; }}
+                    onBlur={(e) => { e.target.style.borderColor = formErrors.package ? "#ef4444" : "#d1d5db"; }}
+                  >
+                    <option value="" disabled>Select a package</option>
+                    {PACKAGES.map((pkg) => (
+                      <option key={pkg.id} value={pkg.title} className="text-gray-800">
+                        {pkg.title} — {pkg.price}
+                      </option>
+                    ))}
+                  </select>
+                  {formErrors.package && <p className="text-red-500 text-xs mt-1">⚠ {formErrors.package}</p>}
+                </div>
 
-              {/* Submit Button */}
-              <div className="pt-6 text-center text-gray-800">
-                <button
-                  type="submit"
-                  className="px-8 py-3 rounded-md font-bold text-white transition-opacity hover:opacity-90 w-auto min-w-[200px]"
-                  style={{ backgroundColor: "#4CAF50" }}
-                >
-                  Let's Go Green
-                </button>
-                <p className="mt-6 text-sm italic font-medium">
-                  We will beat any written quote from a reputable company!
-                </p>
-              </div>
-            </form>
+                {/* Province */}
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">Your Province *</label>
+                  <select
+                    name="province"
+                    value={formData.province}
+                    onChange={handleFormChange}
+                    className={`w-full p-3 border rounded outline-none bg-white transition-colors ${formErrors.province ? "border-red-500 bg-red-50" : "border-gray-300"} ${!formData.province ? "text-gray-400" : "text-gray-800"}`}
+                    onFocus={(e) => { if (!formErrors.province) e.target.style.borderColor = ORANGE; }}
+                    onBlur={(e) => { e.target.style.borderColor = formErrors.province ? "#ef4444" : "#d1d5db"; }}
+                  >
+                    <option value="" disabled>Select your province</option>
+                    {["Eastern Cape", "Free State", "Gauteng", "KwaZulu-Natal", "Limpopo", "Mpumalanga", "North West", "Northern Cape", "Western Cape"].map(prov => (
+                      <option key={prov} value={prov} className="text-gray-800">{prov}</option>
+                    ))}
+                  </select>
+                  {formErrors.province && <p className="text-red-500 text-xs mt-1">⚠ {formErrors.province}</p>}
+                </div>
+
+                {/* Timeline */}
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">When Do You Need Installation? *</label>
+                  <input
+                    type="text"
+                    name="timeline"
+                    value={formData.timeline}
+                    onChange={handleFormChange}
+                    placeholder="e.g. Within the next 2 weeks"
+                    className={`w-full p-3 border rounded outline-none transition-colors ${formErrors.timeline ? "border-red-500 bg-red-50" : "border-gray-300"}`}
+                    onFocus={(e) => { if (!formErrors.timeline) e.target.style.borderColor = ORANGE; }}
+                    onBlur={(e) => { e.target.style.borderColor = formErrors.timeline ? "#ef4444" : "#d1d5db"; }}
+                  />
+                  {formErrors.timeline && <p className="text-red-500 text-xs mt-1">⚠ {formErrors.timeline}</p>}
+                </div>
+
+                {/* Submit */}
+                <div className="pt-4 text-center">
+                  <button
+                    type="submit"
+                    className="px-10 py-3.5 rounded-lg font-bold text-white transition-opacity hover:opacity-90 w-full sm:w-auto min-w-[220px] text-sm uppercase tracking-wide"
+                    style={{ backgroundColor: ACTION_GREEN }}
+                  >
+                    Let's Go Green 🌱
+                  </button>
+                  <p className="mt-4 text-sm italic font-medium text-gray-600">
+                    We will beat any written quote from a reputable company!
+                  </p>
+                  <p className="mt-3 text-xs text-gray-400">
+                    Your information is protected under POPIA. We never share your personal details with third parties.
+                  </p>
+                </div>
+              </form>
+            </div>
           </div>
 
           {/* New Process & Why Choose Us Section */}

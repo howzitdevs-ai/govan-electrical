@@ -1,0 +1,22 @@
+# robots.txt — Govan Electrical
+# https://www.govanelectrical.co.za
+
+# Allow all major search engine crawlers
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://www.govanelectrical.co.za/sitemap.xml
+
+# Block known AI training crawlers (allow Googlebot, Bingbot, etc. for search indexing)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: CCBot
+Disallow: /

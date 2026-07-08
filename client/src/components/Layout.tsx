@@ -5,17 +5,19 @@ import {
   Phone,
   Mail,
   MapPin,
-  Zap,
   Menu,
   X,
-  ChevronDown
+  ChevronDown,
+  ChevronUp,
+  MessageCircle,
 } from "lucide-react";
+import { LeadFormProvider, useLeadForm } from "@/contexts/LeadFormContext";
+import { LeadFormModal } from "@/components/LeadFormModal";
 
 // ─── Color palette (Govan Electrical brand colors) ──────────────────────────
-const NAVY = "#1A1A1A";      // Black (primary dark)
-const ORANGE = "#FFD700";    // Yellow (primary brand)
-const ORANGE_DARK = "#B8860B"; // Dark gold for text on light backgrounds
-const GREEN = "#333333";     // Dark gray (secondary dark)
+const NAVY = "#1A1A1A";
+const ORANGE = "#FFD700";
+const ORANGE_DARK = "#B8860B";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -31,7 +33,6 @@ const NAV_LINKS = [
     ]
   },
   { label: "Why Us", href: "/#why-us" },
-  { label: "Testimonials", href: "/#testimonials" },
   { label: "Contact", href: "/#contact" },
 ];
 
@@ -76,6 +77,7 @@ function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [location] = useLocation();
+  const { openLeadForm } = useLeadForm();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -104,62 +106,67 @@ function Navbar() {
 
         {/* Desktop nav */}
         <ul className="hidden lg:flex items-center gap-1">
-          {NAV_LINKS.map((l) => (
-            <li key={l.label} className="relative group">
-              {l.dropdown ? (
-                <div className="px-3 py-5 cursor-pointer flex items-center gap-1 text-sm font-semibold uppercase tracking-wide transition-colors hover:text-orange-500" style={{ color: NAVY, fontFamily: "Roboto, sans-serif" }}>
-                  <span
-                    onMouseEnter={(e) => ((e.target as HTMLElement).style.color = ORANGE)}
-                    onMouseLeave={(e) => ((e.target as HTMLElement).style.color = NAVY)}
-                  >
-                    {l.label}
-                  </span>
-                  <ChevronDown size={14} className="group-hover:rotate-180 transition-transform" />
-                  
-                  {/* Dropdown Menu */}
-                  <div className="absolute top-full left-0 w-56 bg-white border border-gray-100 shadow-xl rounded-b-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 flex flex-col overflow-hidden">
-                    {l.dropdown.map((drop) => (
-                      <Link key={drop.label} href={drop.href}>
-                        <a 
-                          className="px-4 py-3 text-sm font-semibold hover:bg-gray-50 transition-colors"
-                          style={{ color: NAVY }}
-                          onMouseEnter={(e) => ((e.target as HTMLElement).style.color = ORANGE_DARK)}
-                          onMouseLeave={(e) => ((e.target as HTMLElement).style.color = NAVY)}
-                        >
-                          {drop.label}
-                        </a>
-                      </Link>
-                    ))}
+          {NAV_LINKS.map((l) => {
+            const isActive = l.href === "/" ? location === "/" : location.startsWith(l.href.replace("/#", "/"));
+            return (
+              <li key={l.label} className="relative group">
+                {l.dropdown ? (
+                  <div className="px-3 py-5 cursor-pointer flex items-center gap-1 text-sm font-semibold uppercase tracking-wide transition-colors" style={{ color: NAVY, fontFamily: "Roboto, sans-serif" }}>
+                    <span
+                      onMouseEnter={(e) => ((e.target as HTMLElement).style.color = ORANGE_DARK)}
+                      onMouseLeave={(e) => ((e.target as HTMLElement).style.color = NAVY)}
+                    >
+                      {l.label}
+                    </span>
+                    <ChevronDown size={14} className="group-hover:rotate-180 transition-transform" />
+
+                    {/* Dropdown Menu */}
+                    <div className="absolute top-full left-0 w-56 bg-white border border-gray-100 shadow-xl rounded-b-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 flex flex-col overflow-hidden">
+                      {l.dropdown.map((drop) => (
+                        <Link key={drop.label} href={drop.href}>
+                          <a
+                            className="px-4 py-3 text-sm font-semibold hover:bg-yellow-50 transition-colors"
+                            style={{ color: NAVY }}
+                            onMouseEnter={(e) => ((e.target as HTMLElement).style.color = ORANGE_DARK)}
+                            onMouseLeave={(e) => ((e.target as HTMLElement).style.color = NAVY)}
+                          >
+                            {drop.label}
+                          </a>
+                        </Link>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ) : (
-                <Link href={l.href}>
-                  <a
-                    className="px-3 py-5 block text-sm font-semibold uppercase tracking-wide transition-colors hover:text-orange-500"
-                    style={{ color: NAVY, fontFamily: "Roboto, sans-serif" }}
-                    onMouseEnter={(e) => ((e.target as HTMLElement).style.color = ORANGE)}
-                    onMouseLeave={(e) => ((e.target as HTMLElement).style.color = NAVY)}
-                  >
-                    {l.label}
-                  </a>
-                </Link>
-              )}
-            </li>
-          ))}
+                ) : (
+                  <Link href={l.href}>
+                    <a
+                      className="px-3 py-5 block text-sm font-semibold uppercase tracking-wide transition-colors relative"
+                      style={{ color: isActive ? ORANGE_DARK : NAVY, fontFamily: "Roboto, sans-serif" }}
+                      onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = ORANGE_DARK)}
+                      onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = isActive ? ORANGE_DARK : NAVY)}
+                    >
+                      {l.label}
+                      {isActive && (
+                        <span className="absolute bottom-0 left-3 right-3 h-0.5 rounded-full" style={{ backgroundColor: ORANGE }} />
+                      )}
+                    </a>
+                  </Link>
+                )}
+              </li>
+            );
+          })}
         </ul>
 
         {/* CTA + hamburger */}
         <div className="flex items-center gap-3">
-          <Link href="/#contact">
-            <a
-              className="hidden md:inline-flex items-center gap-2 px-4 py-2 text-sm font-bold text-white rounded transition"
-              style={{ backgroundColor: ORANGE }}
-              onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.backgroundColor = GREEN)}
-              onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.backgroundColor = ORANGE)}
-            >
-              <Phone size={14} /> Get a Quote
-            </a>
-          </Link>
+          <button
+            onClick={() => openLeadForm()}
+            className="hidden md:inline-flex items-center gap-2 px-4 py-2 text-sm font-bold rounded transition"
+            style={{ backgroundColor: ORANGE, color: NAVY }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = ORANGE_DARK; (e.currentTarget as HTMLElement).style.color = "#fff"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = ORANGE; (e.currentTarget as HTMLElement).style.color = NAVY; }}
+          >
+            <Phone size={14} /> Get a Quote
+          </button>
           <button
             className="lg:hidden p-2 rounded"
             style={{ color: NAVY }}
@@ -173,49 +180,61 @@ function Navbar() {
       {/* Mobile menu */}
       {open && (
         <div className="lg:hidden bg-white border-t px-4 py-4 space-y-1 shadow-lg max-h-[80vh] overflow-y-auto">
-          {NAV_LINKS.map((l) => (
-            <div key={l.label}>
-              {l.dropdown ? (
-                <>
-                  <div className="block px-4 py-3 text-sm font-bold bg-gray-50 rounded mt-2" style={{ color: NAVY }}>
-                    {l.label}
-                  </div>
-                  <div className="pl-6 space-y-1 mt-1 border-l-2 border-gray-100 ml-4">
-                    {l.dropdown.map((drop) => (
-                      <Link key={drop.label} href={drop.href}>
-                        <a
-                          className="block px-4 py-2 text-sm font-semibold rounded hover:bg-gray-50"
-                          style={{ color: NAVY }}
-                          onClick={() => setOpen(false)}
-                        >
-                          {drop.label}
-                        </a>
-                      </Link>
-                    ))}
-                  </div>
-                </>
-              ) : (
-                <Link href={l.href}>
-                  <a
-                    className="block px-4 py-3 text-sm font-semibold rounded hover:bg-gray-50"
-                    style={{ color: NAVY }}
-                    onClick={() => setOpen(false)}
-                  >
-                    {l.label}
-                  </a>
-                </Link>
-              )}
-            </div>
-          ))}
-          <Link href="/#contact">
+          {NAV_LINKS.map((l) => {
+            const isActive = l.href === "/" ? location === "/" : location.startsWith(l.href.replace("/#", "/"));
+            return (
+              <div key={l.label}>
+                {l.dropdown ? (
+                  <>
+                    <div className="block px-4 py-3 text-xs font-bold bg-gray-50 rounded mt-2 uppercase tracking-widest" style={{ color: ORANGE_DARK }}>
+                      {l.label}
+                    </div>
+                    <div className="pl-4 space-y-1 mt-1 border-l-2 ml-4" style={{ borderColor: ORANGE }}>
+                      {l.dropdown.map((drop) => (
+                        <Link key={drop.label} href={drop.href}>
+                          <a
+                            className="block px-4 py-2.5 text-sm font-semibold rounded hover:bg-yellow-50 transition-colors"
+                            style={{ color: NAVY }}
+                            onClick={() => setOpen(false)}
+                          >
+                            {drop.label}
+                          </a>
+                        </Link>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <Link href={l.href}>
+                    <a
+                      className="flex items-center justify-between px-4 py-3 text-sm font-semibold rounded hover:bg-yellow-50 transition-colors"
+                      style={{ color: isActive ? ORANGE_DARK : NAVY, borderLeft: isActive ? `3px solid ${ORANGE}` : "3px solid transparent" }}
+                      onClick={() => setOpen(false)}
+                    >
+                      {l.label}
+                      {isActive && <span className="text-xs font-bold" style={{ color: ORANGE }}>●</span>}
+                    </a>
+                  </Link>
+                )}
+              </div>
+            );
+          })}
+          <div className="pt-2 border-t border-gray-100 mt-2 space-y-2">
             <a
-              className="block mt-4 px-4 py-3 text-sm font-bold text-white text-center rounded"
-              style={{ backgroundColor: ORANGE }}
+              href="tel:+27120233410"
+              className="flex items-center gap-2 px-4 py-3 text-sm font-semibold rounded hover:bg-gray-50 transition-colors"
+              style={{ color: NAVY }}
               onClick={() => setOpen(false)}
             >
-              Get a Quote
+              <Phone size={16} style={{ color: ORANGE_DARK }} /> 012 023 3410
             </a>
-          </Link>
+            <button
+              className="w-full px-4 py-3 text-sm font-bold text-center rounded"
+              style={{ backgroundColor: ORANGE, color: NAVY }}
+              onClick={() => { setOpen(false); openLeadForm(); }}
+            >
+              Get a Quote
+            </button>
+          </div>
         </div>
       )}
     </nav>
@@ -226,7 +245,7 @@ function Footer() {
   return (
     <footer className="text-white" style={{ backgroundColor: NAVY }}>
       <div className="max-w-7xl mx-auto px-4 py-14">
-        <div className="grid md:grid-cols-4 gap-10 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-10 mb-12">
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 sm:gap-3 mb-4">
@@ -323,14 +342,66 @@ function Footer() {
   );
 }
 
+// ─── Sticky Mobile CTA Bar ──────────────────────────────────────────────────
+function StickyMobileCTA() {
+  return (
+    <div
+      className="fixed bottom-0 left-0 right-0 z-50 lg:hidden grid grid-cols-2 shadow-2xl"
+      style={{ borderTop: "2px solid #FFD700" }}
+    >
+      <a
+        href="tel:+27120233410"
+        className="flex items-center justify-center gap-2 py-4 font-bold text-sm tracking-wide"
+        style={{ backgroundColor: NAVY, color: ORANGE }}
+        aria-label="Call Govan Electrical"
+      >
+        <Phone size={18} fill="currentColor" /> Call Now
+      </a>
+      <a
+        href="https://wa.me/27711863732"
+        target="_blank"
+        rel="noreferrer"
+        className="flex items-center justify-center gap-2 py-4 font-bold text-sm tracking-wide text-white"
+        style={{ backgroundColor: "#25D366" }}
+        aria-label="WhatsApp Govan Electrical"
+      >
+        <MessageCircle size={18} /> WhatsApp
+      </a>
+    </div>
+  );
+}
+
+// ─── Back to Top Button ──────────────────────────────────────────────────────
+function BackToTop() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > 450);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  if (!visible) return null;
+
+  return (
+    <button
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      className="fixed bottom-20 right-4 lg:bottom-6 lg:right-6 z-40 w-11 h-11 rounded-full flex items-center justify-center shadow-xl transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2"
+      style={{ backgroundColor: ORANGE, color: NAVY, focusRingColor: ORANGE } as React.CSSProperties}
+      aria-label="Scroll back to top"
+    >
+      <ChevronUp size={22} strokeWidth={2.5} />
+    </button>
+  );
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
-  // Scroll to hash on mount and when location changes
   const [location] = useLocation();
   useEffect(() => {
     if (window.location.hash) {
       const el = document.getElementById(window.location.hash.substring(1));
       if (el) {
-        setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 100);
+        setTimeout(() => el.scrollIntoView({ behavior: "smooth" }), 100);
       }
     } else {
       window.scrollTo(0, 0);
@@ -338,13 +409,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
   }, [location]);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <TopBar />
-      <Navbar />
-      <main className="flex-grow">
-        {children}
-      </main>
-      <Footer />
-    </div>
+    <LeadFormProvider>
+      <div className="min-h-screen flex flex-col">
+        <TopBar />
+        <Navbar />
+        {/* pb-16 on mobile creates space above the sticky CTA bar */}
+        <main className="flex-grow pb-16 lg:pb-0">
+          {children}
+        </main>
+        <Footer />
+        <StickyMobileCTA />
+        <BackToTop />
+        <LeadFormModal />
+      </div>
+    </LeadFormProvider>
   );
 }
