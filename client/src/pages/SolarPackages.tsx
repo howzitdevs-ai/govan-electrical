@@ -3,6 +3,7 @@ import { Search, Info, Mail } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { useSEO } from "@/hooks/useSEO";
 import { useLeadForm } from "@/contexts/LeadFormContext";
+import { submitLead } from "@/lib/web3forms";
 import solar1 from "@/images/Solor/solar-1.png";
 import solar2 from "@/images/Solor/solar-2.png";
 import solar3 from "@/images/Solor/solar-3.png";
@@ -481,6 +482,8 @@ export default function SolarPackages() {
   const [formData, setFormData] = useState({ lastName: "", phone: "", email: "", package: "", province: "", timeline: "" });
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formLoading, setFormLoading] = useState(false);
+  const [formSubmitError, setFormSubmitError] = useState("");
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -488,7 +491,7 @@ export default function SolarPackages() {
     if (formErrors[name]) setFormErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const errors: Record<string, string> = {};
     if (!formData.lastName) errors.lastName = "Last Name is required";
@@ -503,9 +506,27 @@ export default function SolarPackages() {
       return;
     }
 
-    setFormSubmitted(true);
-    setFormData({ lastName: "", phone: "", email: "", package: "", province: "", timeline: "" });
-    setTimeout(() => setFormSubmitted(false), 6000);
+    setFormLoading(true);
+    setFormSubmitError("");
+    try {
+      await submitLead({
+        subject: `Solar Package Enquiry — ${formData.package} (${formData.province})`,
+        from_name: formData.lastName,
+        name: formData.lastName,
+        phone: formData.phone,
+        email: formData.email,
+        package: formData.package,
+        province: formData.province,
+        timeline: formData.timeline,
+      });
+      setFormSubmitted(true);
+      setFormData({ lastName: "", phone: "", email: "", package: "", province: "", timeline: "" });
+      setTimeout(() => setFormSubmitted(false), 6000);
+    } catch {
+      setFormSubmitError("Something went wrong. Please try again or call us directly.");
+    } finally {
+      setFormLoading(false);
+    }
   };
 
   return (
@@ -794,11 +815,15 @@ export default function SolarPackages() {
                 <div className="pt-4 text-center">
                   <button
                     type="submit"
-                    className="px-10 py-3.5 rounded-lg font-bold text-white transition-opacity hover:opacity-90 w-full sm:w-auto min-w-[220px] text-sm uppercase tracking-wide"
+                    disabled={formLoading}
+                    className="px-10 py-3.5 rounded-lg font-bold text-white transition-opacity hover:opacity-90 w-full sm:w-auto min-w-[220px] text-sm uppercase tracking-wide disabled:opacity-60"
                     style={{ backgroundColor: ACTION_GREEN }}
                   >
-                    Let's Go Green 🌱
+                    {formLoading ? "Sending…" : "Let's Go Green 🌱"}
                   </button>
+                  {formSubmitError && (
+                    <p className="text-red-500 text-xs mt-2">{formSubmitError}</p>
+                  )}
                   <p className="mt-4 text-sm italic font-medium text-gray-600">
                     We will beat any written quote from a reputable company!
                   </p>

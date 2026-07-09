@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { useLeadForm } from "@/contexts/LeadFormContext";
+import { submitLead } from "@/lib/web3forms";
 import panelsBg from "@/images/panels-electricity-order-sunlight.png";
 import aboutImg from "@/images/imh.jpeg";
 
@@ -599,6 +600,8 @@ function ContactSection() {
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", service: "", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -606,7 +609,7 @@ function ContactSection() {
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const errs: Record<string, string> = {};
     if (!formData.name.trim()) errs.name = "Name is required";
@@ -614,9 +617,27 @@ function ContactSection() {
     if (!formData.phone.trim()) errs.phone = "Phone number is required";
     if (!formData.service) errs.service = "Please select a service";
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 5000);
-    setFormData({ name: "", email: "", phone: "", service: "", message: "" });
+
+    setLoading(true);
+    setSubmitError("");
+    try {
+      await submitLead({
+        subject: `Website Enquiry — ${formData.service} from ${formData.name}`,
+        from_name: formData.name,
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        service: formData.service,
+        message: formData.message || "No additional details provided.",
+      });
+      setSubmitted(true);
+      setFormData({ name: "", email: "", phone: "", service: "", message: "" });
+      setTimeout(() => setSubmitted(false), 6000);
+    } catch {
+      setSubmitError("Something went wrong. Please try again or call us directly.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const fieldCls = (key: string) =>
@@ -818,11 +839,15 @@ function ContactSection() {
 
                     <button
                       type="submit"
-                      className="w-full py-3.5 rounded-lg font-bold text-sm uppercase tracking-wide transition-opacity hover:opacity-90"
+                      disabled={loading}
+                      className="w-full py-3.5 rounded-lg font-bold text-sm uppercase tracking-wide transition-opacity hover:opacity-90 disabled:opacity-60"
                       style={{ backgroundColor: ORANGE, color: NAVY }}
                     >
-                      Send Message
+                      {loading ? "Sending…" : "Send Message"}
                     </button>
+                    {submitError && (
+                      <p className="text-red-500 text-xs text-center">{submitError}</p>
+                    )}
                     <p className="text-xs text-center text-gray-400">
                       Protected under POPIA. We never share your details.
                     </p>

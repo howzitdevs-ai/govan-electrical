@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { X, Phone, Mail, MapPin, User, CheckCircle } from "lucide-react";
 import { useLeadForm } from "@/contexts/LeadFormContext";
+import { submitLead } from "@/lib/web3forms";
 
 const NAVY = "#1A1A1A";
 const ORANGE = "#FFD700";
@@ -50,6 +51,8 @@ export function LeadFormModal() {
   const [formData, setFormData] = useState<FormData>(empty);
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   // Sync prefilled service whenever modal opens
   useEffect(() => {
@@ -86,12 +89,31 @@ export function LeadFormModal() {
     return e;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length > 0) { setErrors(errs); return; }
-    setSubmitted(true);
-    setTimeout(() => { closeLeadForm(); }, 4000);
+
+    setLoading(true);
+    setSubmitError("");
+    try {
+      await submitLead({
+        subject: `New Quote Request — ${formData.service} (${formData.province})`,
+        from_name: formData.name,
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        service: formData.service,
+        province: formData.province,
+        message: formData.message || "No additional details provided.",
+      });
+      setSubmitted(true);
+      setTimeout(() => { closeLeadForm(); }, 4000);
+    } catch {
+      setSubmitError("Something went wrong. Please try again or call us directly.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const fieldClass = (key: keyof FormData) =>
@@ -275,11 +297,15 @@ export function LeadFormModal() {
               {/* Submit */}
               <button
                 type="submit"
-                className="w-full py-3.5 rounded-lg font-bold text-sm uppercase tracking-wide transition-opacity hover:opacity-90 mt-2"
+                disabled={loading}
+                className="w-full py-3.5 rounded-lg font-bold text-sm uppercase tracking-wide transition-opacity hover:opacity-90 mt-2 disabled:opacity-60"
                 style={{ backgroundColor: ORANGE, color: NAVY }}
               >
-                Request My Free Quote
+                {loading ? "Sending…" : "Request My Free Quote"}
               </button>
+              {submitError && (
+                <p className="text-red-500 text-xs text-center">{submitError}</p>
+              )}
 
               {/* Contact alternatives */}
               <div className="flex items-center gap-3 pt-1">
