@@ -7,11 +7,17 @@
 
     <!-- Primary Meta Tags (overridden per-page by useSEO hook) -->
     <title>Govan Electrical | Solar &amp; Electrical Installations | South Africa</title>
-    <meta name="description" content="Expert electrical installations, solar panel systems &amp; diesel generator solutions across South Africa. Certified electricians, 4000+ installations, 4.9★ Google rating. Call 012 023 3410." />
-    <meta name="keywords" content="electricians South Africa, solar panel installation, electrical contractor Pretoria, diesel generator, load shedding solutions, COC certificate, DB board upgrade" />
+    <meta name="description" content="Certified electricians for solar panel installations, electrical wiring, DB board upgrades &amp; diesel generator solutions across South Africa. 4000+ installs. Call 012 023 3410." />
+    <meta name="keywords" content="electricians South Africa, solar panel installation Pretoria, electrical contractor Gauteng, diesel generator South Africa, load shedding solutions, COC certificate electrician, DB board upgrade Pretoria" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <meta name="author" content="Govan Electrical" />
     <meta name="theme-color" content="#FFD700" />
+
+    <!-- Geo / Local SEO -->
+    <meta name="geo.region" content="ZA-GP" />
+    <meta name="geo.placename" content="Pretoria, Gauteng, South Africa" />
+    <meta name="geo.position" content="-25.6748;28.3975" />
+    <meta name="ICBM" content="-25.6748, 28.3975" />
 
     <!-- Canonical (overridden per-page) -->
     <link rel="canonical" href="https://www.govanelectrical.co.za/" />
@@ -20,25 +26,27 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Govan Electrical" />
     <meta property="og:title" content="Govan Electrical | Solar &amp; Electrical Installations | South Africa" />
-    <meta property="og:description" content="Expert electrical installations, solar panel systems &amp; diesel generator solutions across South Africa. Certified electricians, 4000+ installations, 4.9★ Google rating." />
+    <meta property="og:description" content="Certified electricians for solar panel installations, electrical wiring &amp; diesel generator solutions across South Africa. 4000+ installs. Free quotes. Call 012 023 3410." />
     <meta property="og:url" content="https://www.govanelectrical.co.za/" />
     <meta property="og:image" content="https://www.govanelectrical.co.za/og-image.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Govan Electrical — Solar &amp; Electrical Installations across South Africa" />
     <meta property="og:locale" content="en_ZA" />
 
     <!-- Twitter / X Card (overridden per-page) -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Govan Electrical | Solar &amp; Electrical Installations | South Africa" />
-    <meta name="twitter:description" content="Expert electrical installations, solar panel systems &amp; diesel generator solutions across South Africa. Certified electricians, 4000+ installations, 4.9★ Google rating." />
+    <meta name="twitter:description" content="Certified electricians for solar panel installations, electrical wiring &amp; diesel generator solutions across South Africa. 4000+ installs. Call 012 023 3410." />
     <meta name="twitter:image" content="https://www.govanelectrical.co.za/og-image.jpg" />
+    <meta name="twitter:image:alt" content="Govan Electrical — Solar &amp; Electrical Installations across South Africa" />
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-    <!-- JSON-LD: WebSite + Organisation (homepage schema is injected per-route via useSEO) -->
+    <!-- JSON-LD: WebSite + LocalBusiness (served in initial HTML so Googlebot sees it before JS executes) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -60,16 +68,60 @@
           }
         },
         {
-          "@type": "Organization",
-          "@id": "https://www.govanelectrical.co.za/#organization",
+          "@type": "ElectricalContractor",
+          "@id": "https://www.govanelectrical.co.za/#business",
           "name": "Govan Electrical",
+          "legalName": "Govan Electrical (Pty) Ltd",
           "url": "https://www.govanelectrical.co.za",
+          "telephone": "+27-12-023-3410",
+          "email": "Admin@govanelectrical.co.za",
+          "priceRange": "$$",
+          "currenciesAccepted": "ZAR",
+          "paymentAccepted": "Cash, Bank Transfer, EFT",
           "logo": {
             "@type": "ImageObject",
             "url": "https://www.govanelectrical.co.za/logo.png",
             "width": 200,
             "height": 60
           },
+          "image": "https://www.govanelectrical.co.za/og-image.jpg",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Unit 02, 1 Kambathi Street, N4 Gateway Industrial Park",
+            "addressLocality": "Willow Park",
+            "addressRegion": "Gauteng",
+            "postalCode": "0184",
+            "addressCountry": "ZA"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "-25.6748",
+            "longitude": "28.3975"
+          },
+          "hasMap": "https://maps.google.com/?q=-25.6748,28.3975",
+          "openingHoursSpecification": [
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"],
+              "opens": "07:00",
+              "closes": "17:00"
+            },
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": "Saturday",
+              "opens": "08:00",
+              "closes": "13:00"
+            }
+          ],
+          "areaServed": [
+            { "@type": "State", "name": "Gauteng", "containedInPlace": { "@type": "Country", "name": "South Africa" } },
+            { "@type": "State", "name": "Limpopo", "containedInPlace": { "@type": "Country", "name": "South Africa" } },
+            { "@type": "State", "name": "Mpumalanga", "containedInPlace": { "@type": "Country", "name": "South Africa" } },
+            { "@type": "State", "name": "North West", "containedInPlace": { "@type": "Country", "name": "South Africa" } },
+            { "@type": "State", "name": "Western Cape", "containedInPlace": { "@type": "Country", "name": "South Africa" } },
+            { "@type": "State", "name": "KwaZulu-Natal", "containedInPlace": { "@type": "Country", "name": "South Africa" } },
+            { "@type": "Country", "name": "South Africa" }
+          ],
           "contactPoint": [
             {
               "@type": "ContactPoint",
@@ -81,18 +133,22 @@
             {
               "@type": "ContactPoint",
               "telephone": "+27-71-186-3732",
-              "contactType": "customer service",
-              "contactOption": "TollFree",
-              "areaServed": "ZA"
+              "contactType": "sales",
+              "areaServed": "ZA",
+              "availableLanguage": "English"
             }
           ],
-          "email": "Admin@govanelectrical.co.za",
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Unit 02, 1 Kambathi Street, N4 Gateway Industrial Park",
-            "addressLocality": "Willow Park",
-            "addressRegion": "Gauteng",
-            "addressCountry": "ZA"
+          "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Electrical & Solar Services",
+            "itemListElement": [
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Solar Panel Installations", "url": "https://www.govanelectrical.co.za/solar-solutions" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Electrical Installations & Wiring", "url": "https://www.govanelectrical.co.za/electrical-solutions" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Diesel Generator Solutions", "url": "https://www.govanelectrical.co.za/diesel-delivery" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "DB Board Upgrades" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Certificate of Compliance (CoC)" } },
+              { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Battery Backup Systems" } }
+            ]
           }
         }
       ]

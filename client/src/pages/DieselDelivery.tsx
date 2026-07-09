@@ -72,9 +72,9 @@ const DIESEL_SCHEMA = [
 
 export default function DieselDelivery() {
   useSEO({
-    title: "Diesel Generator Installation & Supply South Africa | Govan Electrical",
-    description: "Diesel generator installation, refueling & bulk diesel supply for businesses, homes & construction sites. Emergency response available. Beat load-shedding. Get a free quote.",
-    keywords: "diesel generator South Africa, generator installation Pretoria, diesel supply Gauteng, load shedding generator, emergency refueling, bulk diesel delivery, backup power South Africa",
+    title: "Diesel Generator Installation Pretoria & South Africa | Fuel Delivery | Govan Electrical",
+    description: "Diesel generator installation, refueling & bulk diesel supply in Pretoria, Gauteng & across South Africa. Emergency response available 24/7. Beat load-shedding. Free quote — call 012 023 3410.",
+    keywords: "diesel generator Pretoria, generator installation Gauteng, diesel supply South Africa, bulk diesel delivery Pretoria, load shedding generator South Africa, emergency generator refueling, backup power Pretoria, diesel generator installation South Africa",
     canonical: "/diesel-delivery",
     schema: DIESEL_SCHEMA,
   });

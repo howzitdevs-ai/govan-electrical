@@ -74,9 +74,9 @@ const ELECTRICAL_SCHEMA = [
 
 export default function ElectricalSolutions() {
   useSEO({
-    title: "Certified Electricians South Africa | Govan Electrical",
-    description: "Licensed electricians for residential, commercial & industrial electrical work in South Africa. Wiring, DB boards, fault finding & CoC certificates. SANS compliant. Free quote.",
-    keywords: "certified electricians South Africa, electrical installation South Africa, DB board upgrade, certificate of compliance CoC, fault finding electrician, electrician Pretoria Gauteng",
+    title: "Certified Electricians Pretoria & Gauteng | DB Board, CoC, Wiring | Govan Electrical",
+    description: "Licensed electricians in Pretoria, Gauteng & across South Africa. Residential & commercial wiring, DB board upgrades, fault finding, CoC certificates & industrial electrical. SANS compliant. Free quote — call 012 023 3410.",
+    keywords: "electricians Pretoria, certified electricians Gauteng, electrician South Africa, DB board upgrade Pretoria, certificate of compliance CoC Pretoria, fault finding electrician Gauteng, electrical wiring Pretoria, electrical contractor South Africa, SANS compliant electrician",
     canonical: "/electrical-solutions",
     schema: ELECTRICAL_SCHEMA,
   });

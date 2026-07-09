@@ -7,7 +7,7 @@
   <!-- Homepage -->
   <url>
     <loc>https://www.govanelectrical.co.za/</loc>
-    <lastmod>2026-06-27</lastmod>
+    <lastmod>2026-07-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -15,33 +15,33 @@
   <!-- Solar Solutions -->
   <url>
     <loc>https://www.govanelectrical.co.za/solar-solutions</loc>
-    <lastmod>2026-06-27</lastmod>
+    <lastmod>2026-07-09</lastmod>
     <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Solar Packages (pricing page — high commercial intent) -->
+  <url>
+    <loc>https://www.govanelectrical.co.za/solar-packages</loc>
+    <lastmod>2026-07-09</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <!-- Electrical Solutions -->
   <url>
     <loc>https://www.govanelectrical.co.za/electrical-solutions</loc>
-    <lastmod>2026-06-27</lastmod>
+    <lastmod>2026-07-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
-  <!-- Diesel Power Generator -->
+  <!-- Diesel Delivery -->
   <url>
     <loc>https://www.govanelectrical.co.za/diesel-delivery</loc>
-    <lastmod>2026-06-27</lastmod>
+    <lastmod>2026-07-09</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-  </url>
-
-  <!-- Solar Packages -->
-  <url>
-    <loc>https://www.govanelectrical.co.za/solar-packages</loc>
-    <lastmod>2026-06-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
   </url>
 
 </urlset>

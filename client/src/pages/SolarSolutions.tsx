@@ -72,9 +72,9 @@ const SOLAR_SCHEMA = [
 
 export default function SolarSolutions() {
   useSEO({
-    title: "Solar Panel Installations South Africa | Govan Electrical",
-    description: "Professional solar panel installations, battery backup & hybrid systems for homes & businesses. Free system monitoring included. 4000+ SA installs. Get a free quote today.",
-    keywords: "solar panel installation South Africa, solar energy solutions, battery backup system, hybrid solar system, load shedding solar, solar installation Pretoria, Gauteng solar panels",
+    title: "Solar Panel Installation Pretoria & South Africa | Battery Backup | Govan Electrical",
+    description: "Certified solar panel installations in Pretoria, Gauteng & across South Africa. Battery backup systems, hybrid solar & inverter solutions for homes and businesses. Beat load-shedding. Free quote — call 012 023 3410.",
+    keywords: "solar panel installation Pretoria, solar panels Gauteng, solar installation South Africa, battery backup system Pretoria, hybrid solar system South Africa, load shedding solar Pretoria, inverter installation Gauteng, solar energy solutions, solar panel price South Africa",
     canonical: "/solar-solutions",
     schema: SOLAR_SCHEMA,
   });

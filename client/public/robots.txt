@@ -1,14 +1,18 @@
 # robots.txt — Govan Electrical
 # https://www.govanelectrical.co.za
 
-# Allow all major search engine crawlers
+# Allow all search engine crawlers (Googlebot, Bingbot, etc.)
 User-agent: *
 Allow: /
 
 # Sitemap location
 Sitemap: https://www.govanelectrical.co.za/sitemap.xml
 
-# Block known AI training crawlers (allow Googlebot, Bingbot, etc. for search indexing)
+# ── Block AI model-training crawlers ────────────────────────────────────────
+# These block AI training use only — NOT search indexing or AI citations.
+# Blocking GPTBot does NOT prevent ChatGPT from citing this site via browsing.
+# Blocking Google-Extended does NOT affect Google Search rankings.
+
 User-agent: GPTBot
 Disallow: /
 
@@ -19,4 +23,10 @@ User-agent: Bytespider
 Disallow: /
 
 User-agent: CCBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Applebot-Extended
 Disallow: /

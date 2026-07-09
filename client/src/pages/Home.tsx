@@ -194,31 +194,39 @@ const HOME_SCHEMA = [
         "closes": "13:00"
       }
     ],
+    "hasMap": "https://maps.google.com/?q=-25.6748,28.3975",
+    "areaServed": [
+      { "@type": "State", "name": "Gauteng" },
+      { "@type": "State", "name": "Limpopo" },
+      { "@type": "State", "name": "Mpumalanga" },
+      { "@type": "State", "name": "North West" },
+      { "@type": "State", "name": "Western Cape" },
+      { "@type": "State", "name": "KwaZulu-Natal" },
+      { "@type": "Country", "name": "South Africa" }
+    ],
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
       "name": "Electrical & Solar Services",
       "itemListElement": [
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Solar Panel Installations", "url": "https://www.govanelectrical.co.za/solar-solutions" } },
         { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Electrical Installations & Wiring", "url": "https://www.govanelectrical.co.za/electrical-solutions" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Diesel Power Generator Solutions", "url": "https://www.govanelectrical.co.za/diesel-delivery" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Electrical Maintenance & Repairs" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Safety Compliance Certificates (CoC)" } },
-        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Industrial Electrical Work" } }
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Diesel Generator Solutions", "url": "https://www.govanelectrical.co.za/diesel-delivery" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "DB Board Upgrades & Repairs" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Certificate of Compliance (CoC)" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Battery Backup & Inverter Systems" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Fault Finding & Electrical Repairs" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Industrial Electrical Contracting" } }
       ]
-    },
-    "sameAs": [
-      "https://www.facebook.com/govanelectrical",
-      "https://www.instagram.com/govanelectrical"
-    ]
+    }
   }
 ];
 
 // ─── Main export ───────────────────────────────────────────────────────────
 export default function Home() {
   useSEO({
-    title: "Govan Electrical | Solar & Electrical Installations | South Africa",
-    description: "Expert electrical installations, solar panel systems & diesel generator solutions across South Africa. Certified electricians, 4000+ installations. Call 012 023 3410.",
-    keywords: "electricians South Africa, solar panel installation South Africa, electrical contractor Pretoria, diesel generator South Africa, load shedding solutions, COC certificate, DB board upgrade, Govan Electrical",
+    title: "Govan Electrical | Electricians Pretoria & South Africa | Solar, DB Board, CoC",
+    description: "Certified electricians in Pretoria, Gauteng & across South Africa. Solar panel installations, DB board upgrades, CoC certificates, fault finding & diesel generator solutions. 4000+ completed jobs. Call 012 023 3410.",
+    keywords: "electricians Pretoria, electricians Gauteng, electricians South Africa, solar panel installation Pretoria, solar panels South Africa, DB board upgrade Pretoria, CoC certificate electrician, fault finding electrician, electrical contractor Gauteng, load shedding solutions, diesel generator South Africa, Govan Electrical",
     canonical: "/",
     schema: HOME_SCHEMA,
   });

@@ -468,9 +468,9 @@ const PACKAGES_SCHEMA = [
 
 export default function SolarPackages() {
   useSEO({
-    title: "Solar System Packages & Prices South Africa | Govan Electrical",
-    description: "Browse 23+ solar packages from 3.5kW to 20kW. Prices from R29,900. Brands: Deye, Sunsynk, Luxpower, Felicity. Installation & COC included. Beat load-shedding today.",
-    keywords: "solar packages South Africa, solar system prices, 5kW solar system price, 10kW solar system, Deye solar, Sunsynk inverter, Luxpower solar, solar installation cost South Africa",
+    title: "Solar System Packages & Prices Pretoria | Deye, Sunsynk, Luxpower | Govan Electrical",
+    description: "Browse 23+ solar packages in Pretoria, Gauteng & South Africa. From R29,900. Systems from 3.5kW–20kW. Brands: Deye, Sunsynk, Luxpower, Felicity. Professional installation & CoC included. Beat load-shedding today.",
+    keywords: "solar packages Pretoria, solar system prices South Africa, 5kW solar system price, 10kW solar system Gauteng, Deye solar South Africa, Sunsynk inverter price, Luxpower solar system, solar installation cost Pretoria, best solar packages South Africa 2026",
     canonical: "/solar-packages",
     schema: PACKAGES_SCHEMA,
   });

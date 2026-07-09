@@ -6,12 +6,14 @@ export interface SEOProps {
   keywords?: string;
   canonical: string;        // path only, e.g. "/" or "/solar-solutions"
   ogImage?: string;
+  ogImageAlt?: string;
   schema?: object | object[];
 }
 
 const SITE_NAME = "Govan Electrical";
 const SITE_URL = "https://www.govanelectrical.co.za";
 const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.jpg`;
+const DEFAULT_OG_ALT = "Govan Electrical — Solar & Electrical Installations across South Africa";
 const SCHEMA_SCRIPT_ID = "seo-json-ld";
 
 function setMeta(attr: "name" | "property", attrValue: string, content: string) {
@@ -54,10 +56,11 @@ function removeJsonLd() {
   document.getElementById(SCHEMA_SCRIPT_ID)?.remove();
 }
 
-export function useSEO({ title, description, keywords, canonical, ogImage, schema }: SEOProps) {
+export function useSEO({ title, description, keywords, canonical, ogImage, ogImageAlt, schema }: SEOProps) {
   useEffect(() => {
     const absoluteUrl = `${SITE_URL}${canonical}`;
     const image = ogImage || DEFAULT_OG_IMAGE;
+    const imageAlt = ogImageAlt || DEFAULT_OG_ALT;
 
     // Page title
     document.title = title;
@@ -79,6 +82,7 @@ export function useSEO({ title, description, keywords, canonical, ogImage, schem
     setMeta("property", "og:image", image);
     setMeta("property", "og:image:width", "1200");
     setMeta("property", "og:image:height", "630");
+    setMeta("property", "og:image:alt", imageAlt);
     setMeta("property", "og:locale", "en_ZA");
 
     // Twitter / X Card
@@ -86,6 +90,7 @@ export function useSEO({ title, description, keywords, canonical, ogImage, schem
     setMeta("name", "twitter:title", title);
     setMeta("name", "twitter:description", description);
     setMeta("name", "twitter:image", image);
+    setMeta("name", "twitter:image:alt", imageAlt);
 
     // JSON-LD Structured Data
     if (schema) {
@@ -93,5 +98,5 @@ export function useSEO({ title, description, keywords, canonical, ogImage, schem
     } else {
       removeJsonLd();
     }
-  }, [title, description, keywords, canonical, ogImage, schema]);
+  }, [title, description, keywords, canonical, ogImage, ogImageAlt, schema]);
 }
