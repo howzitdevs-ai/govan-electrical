@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Web3Forms Test — Govan Electrical</title>
+  <style>
+    body { font-family: sans-serif; max-width: 520px; margin: 40px auto; padding: 0 20px; }
+    input, textarea { display: block; width: 100%; padding: 10px; margin: 6px 0 16px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
+    button { background: #FFD700; color: #1A1A1A; border: none; padding: 12px 24px; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 14px; }
+    #result { margin-top: 20px; padding: 16px; border-radius: 8px; font-size: 13px; white-space: pre-wrap; word-break: break-all; }
+    .success { background: #d4edda; border: 1px solid #28a745; color: #155724; }
+    .error   { background: #f8d7da; border: 1px solid #dc3545; color: #721c24; }
+    .info    { background: #d1ecf1; border: 1px solid #17a2b8; color: #0c5460; }
+  </style>
+</head>
+<body>
+  <h2>Web3Forms Direct Test</h2>
+  <p style="color:#666;font-size:13px">This page tests the Web3Forms API directly — no React, no build step. Open your browser DevTools → Network tab while you submit to see the full request/response.</p>
+
+  <label>Your Name</label>
+  <input type="text" id="name" value="Test User" />
+
+  <label>Your Email (where replies go)</label>
+  <input type="email" id="email" value="Admin@govanelectrical.co.za" />
+
+  <label>Phone</label>
+  <input type="tel" id="phone" value="012 023 3410" />
+
+  <label>Message</label>
+  <textarea id="message" rows="3">This is a test submission from the Govan Electrical website test page.</textarea>
+
+  <button onclick="testSubmit()">Send Test Submission</button>
+
+  <div id="result" class="info" style="display:none"></div>
+
+  <script>
+    async function testSubmit() {
+      const resultEl = document.getElementById('result');
+      resultEl.style.display = 'block';
+      resultEl.className = 'info';
+      resultEl.textContent = 'Sending to Web3Forms API...';
+
+      const payload = {
+        access_key: "711de358-2ecc-49c1-a922-b7225612390b",
+        subject: "TEST — Web3Forms API Test from Govan Electrical",
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        replyto: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        message: document.getElementById('message').value,
+      };
+
+      console.log('Sending payload:', payload);
+
+      try {
+        const res = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify(payload),
+        });
+
+        const text = await res.text();
+        console.log('Raw response:', text);
+
+        let json;
+        try { json = JSON.parse(text); } catch { json = null; }
+
+        if (json && json.success) {
+          resultEl.className = 'success';
+          resultEl.textContent = '✅ SUCCESS!\n\nWeb3Forms says: ' + (json.message || 'Submission accepted') + '\n\nCheck your inbox (and spam folder) for the email.\n\nFull response:\n' + JSON.stringify(json, null, 2);
+        } else {
+          resultEl.className = 'error';
+          resultEl.textContent = '❌ FAILED\n\nHTTP status: ' + res.status + '\n\nFull response:\n' + (json ? JSON.stringify(json, null, 2) : text);
+        }
+      } catch (err) {
+        resultEl.className = 'error';
+        resultEl.textContent = '❌ NETWORK ERROR\n\n' + err.message + '\n\nThis usually means a CORS or connectivity issue. Check the browser console for details.';
+        console.error('Error:', err);
+      }
+    }
+  </script>
+</body>
+</html>
