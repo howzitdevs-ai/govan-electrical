@@ -511,7 +511,6 @@ export default function SolarPackages() {
     try {
       await submitLead({
         subject: `Solar Package Enquiry — ${formData.package} (${formData.province})`,
-        from_name: formData.lastName,
         name: formData.lastName,
         phone: formData.phone,
         email: formData.email,
@@ -522,8 +521,10 @@ export default function SolarPackages() {
       setFormSubmitted(true);
       setFormData({ lastName: "", phone: "", email: "", package: "", province: "", timeline: "" });
       setTimeout(() => setFormSubmitted(false), 6000);
-    } catch {
-      setFormSubmitError("Something went wrong. Please try again or call us directly.");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      console.error("[Web3Forms]", msg);
+      setFormSubmitError(`Could not send your request: ${msg}. Please call 012 023 3410.`);
     } finally {
       setFormLoading(false);
     }

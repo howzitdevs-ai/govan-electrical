@@ -99,7 +99,6 @@ export function LeadFormModal() {
     try {
       await submitLead({
         subject: `New Quote Request — ${formData.service} (${formData.province})`,
-        from_name: formData.name,
         name: formData.name,
         phone: formData.phone,
         email: formData.email,
@@ -109,8 +108,10 @@ export function LeadFormModal() {
       });
       setSubmitted(true);
       setTimeout(() => { closeLeadForm(); }, 4000);
-    } catch {
-      setSubmitError("Something went wrong. Please try again or call us directly.");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      console.error("[Web3Forms]", msg);
+      setSubmitError(`Could not send your request: ${msg}. Please call us on 012 023 3410.`);
     } finally {
       setLoading(false);
     }

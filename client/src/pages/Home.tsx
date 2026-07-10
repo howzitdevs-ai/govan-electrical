@@ -623,7 +623,6 @@ function ContactSection() {
     try {
       await submitLead({
         subject: `Website Enquiry — ${formData.service} from ${formData.name}`,
-        from_name: formData.name,
         name: formData.name,
         email: formData.email,
         phone: formData.phone,
@@ -633,8 +632,10 @@ function ContactSection() {
       setSubmitted(true);
       setFormData({ name: "", email: "", phone: "", service: "", message: "" });
       setTimeout(() => setSubmitted(false), 6000);
-    } catch {
-      setSubmitError("Something went wrong. Please try again or call us directly.");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Unknown error";
+      console.error("[Web3Forms]", msg);
+      setSubmitError(`Could not send your message: ${msg}. Please call 012 023 3410.`);
     } finally {
       setLoading(false);
     }
