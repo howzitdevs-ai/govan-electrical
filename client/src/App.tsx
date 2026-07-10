@@ -1,6 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
+import Web3FormsTest from "@/pages/Web3FormsTest";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -19,6 +20,7 @@ function Router() {
       <Route path={"/electrical-solutions"} component={ElectricalSolutions} />
       <Route path={"/diesel-delivery"} component={DieselDelivery} />
       <Route path={"/solar-packages"} component={SolarPackages} />
+      <Route path={"/web3forms-test"} component={Web3FormsTest} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
