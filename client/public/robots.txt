@@ -30,3 +30,9 @@ Disallow: /
 
 User-agent: Applebot-Extended
 Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: OAI-SearchBot
+Disallow: /
