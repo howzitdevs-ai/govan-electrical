@@ -5,12 +5,15 @@ import Web3FormsTest from "@/pages/Web3FormsTest";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { AdminAuthProvider } from "./contexts/AdminAuthContext";
 import Home from "./pages/Home";
 import SolarSolutions from "./pages/SolarSolutions";
 import ElectricalSolutions from "./pages/ElectricalSolutions";
 import DieselDelivery from "./pages/DieselDelivery";
 
 import SolarPackages from "./pages/SolarPackages";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 
 function Router() {
   return (
@@ -21,6 +24,16 @@ function Router() {
       <Route path={"/diesel-delivery"} component={DieselDelivery} />
       <Route path={"/solar-packages"} component={SolarPackages} />
       <Route path={"/web3forms-test"} component={Web3FormsTest} />
+      <Route path={"/admin/login"}>
+        <AdminAuthProvider>
+          <AdminLogin />
+        </AdminAuthProvider>
+      </Route>
+      <Route path={"/admin"}>
+        <AdminAuthProvider>
+          <AdminDashboard />
+        </AdminAuthProvider>
+      </Route>
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
