@@ -44,7 +44,7 @@ export async function createPackage(input: PackageInput): Promise<Package> {
 }
 
 export async function updatePackage(id: number, input: PackageInput): Promise<Package> {
-  const res = await fetch(`/api/admin/packages/${id}`, {
+  const res = await fetch(`/api/admin/package?id=${id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
@@ -53,7 +53,7 @@ export async function updatePackage(id: number, input: PackageInput): Promise<Pa
 }
 
 export async function deletePackage(id: number): Promise<void> {
-  const res = await fetch(`/api/admin/packages/${id}`, { method: "DELETE" });
+  const res = await fetch(`/api/admin/package?id=${id}`, { method: "DELETE" });
   await parseJsonOrThrow(res);
 }
 
