@@ -1,8 +1,8 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { sql } from "../../_lib/db";
-import { rowToPackage, type PackageRow } from "../../_lib/packages";
-import { requireAdmin } from "../../_lib/auth";
-import { packageInputSchema } from "../../../shared/packageSchema";
+import { sql } from "../../_lib/db.js";
+import { rowToPackage, type PackageRow } from "../../_lib/packages.js";
+import { requireAdmin } from "../../_lib/auth.js";
+import { packageInputSchema } from "../../../shared/packageSchema.js";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!(await requireAdmin(req))) {

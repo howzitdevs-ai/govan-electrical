@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { sql } from "./_lib/db";
-import { rowToPackage, type PackageRow } from "./_lib/packages";
+import { sql } from "./_lib/db.js";
+import { rowToPackage, type PackageRow } from "./_lib/packages.js";
 
 // Public endpoint — returns active packages ordered for display. Used by
 // /solar-packages instead of the old hardcoded PACKAGES array.

@@ -1,4 +1,4 @@
-import type { Package } from "../../shared/types";
+import type { Package } from "../../shared/types.js";
 
 // Raw shape returned by node-postgres/neon for a `packages` row
 // (snake_case columns, arrays come back as JS arrays already).
