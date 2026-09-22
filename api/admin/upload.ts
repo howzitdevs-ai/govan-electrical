@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
-import { requireAdmin } from "../_lib/auth";
+import { requireAdmin } from "../_lib/auth.js";
 
 // Server side of the client-direct-upload flow for @vercel/blob. The browser
 // calls upload() from client/src/lib/adminApi.ts, which POSTs here first to

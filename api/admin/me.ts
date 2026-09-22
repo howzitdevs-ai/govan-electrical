@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { requireAdmin } from "../_lib/auth";
+import { requireAdmin } from "../_lib/auth.js";
 
 // Used by the frontend AdminAuthContext to check session state on mount.
 export default async function handler(req: VercelRequest, res: VercelResponse) {

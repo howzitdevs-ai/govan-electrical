@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { sql } from "../../_lib/db";
-import { requireAdmin } from "../../_lib/auth";
-import { reorderSchema } from "../../../shared/packageSchema";
+import { sql } from "../../_lib/db.js";
+import { requireAdmin } from "../../_lib/auth.js";
+import { reorderSchema } from "../../../shared/packageSchema.js";
 
 // Bulk-persists a new package order. Body: { orderedIds: number[] } — the
 // array's position becomes each package's new sort_order.
