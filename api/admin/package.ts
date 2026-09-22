@@ -1,9 +1,12 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { sql } from "../../_lib/db.js";
-import { rowToPackage, type PackageRow } from "../../_lib/packages.js";
-import { requireAdmin } from "../../_lib/auth.js";
-import { packageInputSchema } from "../../../shared/packageSchema.js";
+import { sql } from "../_lib/db.js";
+import { rowToPackage, type PackageRow } from "../_lib/packages.js";
+import { requireAdmin } from "../_lib/auth.js";
+import { packageInputSchema } from "../../shared/packageSchema.js";
 
+// Update/delete a single package, identified by ?id=<n> (query param rather
+// than a /packages/[id] path segment — Vercel wasn't recognizing the bracket
+// dynamic-route file in this project, so this sidesteps that entirely).
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!(await requireAdmin(req))) {
     return res.status(401).json({ error: "Not authenticated" });
@@ -49,7 +52,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
       return res.status(200).json(rowToPackage(rows[0]));
     } catch (err) {
-      console.error("[api/admin/packages/:id] PUT failed", err);
+      console.error("[api/admin/package] PUT failed", err);
       return res.status(500).json({ error: "Failed to update package" });
     }
   }
@@ -65,7 +68,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
       return res.status(200).json({ ok: true });
     } catch (err) {
-      console.error("[api/admin/packages/:id] DELETE failed", err);
+      console.error("[api/admin/package] DELETE failed", err);
       return res.status(500).json({ error: "Failed to delete package" });
     }
   }
