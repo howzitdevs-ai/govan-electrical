@@ -11,7 +11,7 @@ import {
   ChevronUp,
   MessageCircle,
 } from "lucide-react";
-import { LeadFormProvider, useLeadForm } from "@/contexts/LeadFormContext";
+import { useLeadForm } from "@/contexts/LeadFormContext";
 import { LeadFormModal } from "@/components/LeadFormModal";
 
 // ─── Color palette (Govan Electrical brand colors) ──────────────────────────
@@ -459,19 +459,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <LeadFormProvider>
-      <div className="min-h-screen flex flex-col">
-        <TopBar />
-        <Navbar />
-        {/* pb-16 on mobile creates space above the sticky CTA bar */}
-        <main className="flex-grow pb-16 lg:pb-0">
-          {children}
-        </main>
-        <Footer />
-        <StickyMobileCTA />
-        <BackToTop />
-        <LeadFormModal />
-      </div>
-    </LeadFormProvider>
+    <div className="min-h-screen flex flex-col">
+      <TopBar />
+      <Navbar />
+      {/* pb-16 on mobile creates space above the sticky CTA bar */}
+      <main className="flex-grow pb-16 lg:pb-0">
+        {children}
+      </main>
+      <Footer />
+      <StickyMobileCTA />
+      <BackToTop />
+      <LeadFormModal />
+    </div>
   );
 }

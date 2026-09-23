@@ -5,6 +5,7 @@ import Web3FormsTest from "@/pages/Web3FormsTest";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { LeadFormProvider } from "./contexts/LeadFormContext";
 import { AdminAuthProvider } from "./contexts/AdminAuthContext";
 import Home from "./pages/Home";
 import SolarSolutions from "./pages/SolarSolutions";
@@ -55,7 +56,9 @@ function App() {
       >
         <TooltipProvider>
           <Toaster />
-          <Router />
+          <LeadFormProvider>
+            <Router />
+          </LeadFormProvider>
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>
